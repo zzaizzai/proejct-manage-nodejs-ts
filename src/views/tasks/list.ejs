@@ -1,0 +1,21 @@
+<%- include("../header") %> 
+<%- include("../components/navbar") %>
+<%- include("../components/task_menu") %>
+
+<ul>
+    <% tasks.forEach(task => { %>
+        <li>
+            <%= task.name %>: <%= task.description %>
+            <br>
+            Created At: <%= task.created_at %>
+            <br>
+            Updated At: <%= task.updated_at %>
+            <br>
+            author: <%= task.author %>
+            
+        </li>
+    <% }); %>
+</ul>
+
+
+<%- include("../footer") %>

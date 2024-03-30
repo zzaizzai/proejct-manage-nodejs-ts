@@ -5,11 +5,13 @@
 <ul>
     <% projects.forEach(project => { %>
         <li>
-            <%= project.name %>: <%= project.description %>
+            <a href="/projects/detail?id=<%= project.id %>"><%= project.name %>: <%= project.description %></a>
             <br>
             Created At: <%= project.created_at %>
             <br>
             Updated At: <%= project.updated_at %>
+            <br>
+            author: <%= project.author %>
             
         </li>
     <% }); %>

@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express';
 import routeRouter from './routes/route';
 import projectRouter from './routes/projects';
+import taskRouter from './routes/tasks';
 import { getUsers, resetTable ,createUser} from './db';
 const path = require('path')
 const app = express();
@@ -61,6 +62,7 @@ app.get('/db/create', async (req: Request, res: Response) => {
 // routes
 app.use('/route', routeRouter);
 app.use('/projects', projectRouter);
+app.use('/tasks', taskRouter);
 
 
 app.listen(8080, ()=> {
