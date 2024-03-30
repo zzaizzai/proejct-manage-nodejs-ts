@@ -6,7 +6,7 @@ import sqlite3 from 'sqlite3';
 const dbPath = './database.db';
 
 // 데이터베이스 생성 또는 연결
-const db = new sqlite3.Database(dbPath, (err) => {
+export const db = new sqlite3.Database(dbPath, (err) => {
     if (err) {
         console.error('Error opening database', err);
         return;
@@ -93,3 +93,5 @@ export const deleteUser = (userId: number) => {
         console.log('User deleted successfully');
     });
 };
+
+

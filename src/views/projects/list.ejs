@@ -1,0 +1,18 @@
+<%- include("../header") %> 
+<%- include("../components/navbar") %>
+<%- include("../components/project_menu") %>
+
+<ul>
+    <% projects.forEach(project => { %>
+        <li>
+            <%= project.name %>: <%= project.description %>
+            <br>
+            Created At: <%= project.created_at %>
+            <br>
+            Updated At: <%= project.updated_at %>
+            
+        </li>
+    <% }); %>
+</ul>
+
+<%- include("../footer") %>
