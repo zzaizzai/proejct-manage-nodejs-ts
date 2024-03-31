@@ -28,6 +28,14 @@ router.get('/create', async (req, res) => {
 
     const name = req.query.name as string;
     const description = req.query.description as string;
+    const parentProjectIdStr = req.query.parentProjectId as string;
+    const parentProjectIdNumber = parseInt(parentProjectIdStr, 10);
+
+    if (isNaN(parentProjectIdNumber)) {
+        console.error('Failed to parse id:', parentProjectIdNumber);
+        return res.status(500).json({ error: 'Bed Method' });
+    }
+
 
     if (!name || !description) {
         return res.status(400).json({ error: 'Missing name or description' });
@@ -35,7 +43,7 @@ router.get('/create', async (req, res) => {
 
 
     try {
-        await Task.createTask(name, description)
+        await Task.createTask({name: name, description: description, parentProjectId: parentProjectIdNumber})
         res.redirect('/tasks/list')
     } catch (error) {
         console.error(error);

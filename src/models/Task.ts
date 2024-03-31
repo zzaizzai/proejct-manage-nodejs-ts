@@ -45,13 +45,15 @@ export class Task extends BasePost {
         return { ...super.displayInfo(), dueDate: this.dueDate };
     }
 
-    static createTask = async (name: string = 'unknowon', description: string = 'no description', author: string = 'unknown') => {
+    static createTask = async (
+        { name = 'unknowon', description = 'no description', author = 'unknown', parentProjectId }:
+        { name?: string, description?: string, author?: string, parentProjectId?: number }) => {
 
         const sql = `
-        INSERT INTO ${this.TABLE_NAME} (name, description, author) VALUES (?, ?, ?);
+        INSERT INTO ${this.TABLE_NAME} (name, description, author, parent_project_id) VALUES (?, ?, ?, ?);
         `;
         return new Promise<void>((resolve, reject) => {
-            db.run(sql, [name, description, author], (err) => {
+            db.run(sql, [name, description, author, parentProjectId], (err) => {
                 if (err) {
                     reject(err);
                     return;
@@ -70,7 +72,7 @@ export class Task extends BasePost {
         try {
             await this.dropTaskTable()
             await this.createTable()
-            await this.createTask('test', 'ok')
+            await this.createTask({ name: 'test', description: 'ok' })
         } catch (error) {
             console.log(error)
             throw new Error('Failed to reset projects table');
@@ -104,4 +106,39 @@ export class Task extends BasePost {
     static getAllTasks = async (): Promise<any[]> => {
         return this.getAll(this.TABLE_NAME)
     };
+
+    showTest(): string {
+        return 'good'
+    }
+
+    static async getTasksWithParentProjectId(parentProjectId: number): Promise<Task[]> {
+        try {
+            const sql = `SELECT * FROM ${this.TABLE_NAME} WHERE parent_project_id = ?`;
+            const rows = await new Promise<any[]>((resolve, reject) => {
+                db.all(sql, [parentProjectId], (err, rows) => {
+                    if (err) {
+                        reject(err);
+                        return;
+                    }
+                    resolve(rows);
+                });
+            });
+
+            const tasks: Task[] = rows.map((row: any) => {
+                return new Task({
+                    id: row.id,
+                    name: row.name,
+                    description: row.description,
+                    created_at: row.created_at,
+                    updated_at: row.updated_at,
+                    author: row.author,
+                    parentProjectId: row.parent_project_id
+                });
+            });
+
+            return tasks;
+        } catch (error) {
+            throw new Error('Failed to retrieve tasks with parent project ID');
+        }
+    }
 }

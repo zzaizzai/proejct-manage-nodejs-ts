@@ -16,4 +16,18 @@
         
 <% }); %>
 
+<% childItems.forEach(item => { %>
+    
+        <%= item.name %>: <%= item.description %>
+        <br>
+        Created At: <%= item.created_at %>
+        <br>
+        Updated At: <%= item.updated_at %>
+        <br>
+        author: <%= item.author %>
+        <%= item.showTest() %>
+
+        <br>
+<% }); %>
+
 <%- include("../footer") %>
