@@ -3,7 +3,7 @@
 <%- include("../components/project_menu") %>
 
 
-<h3>Detail Page</h3>
+<h3>Project Detail Page</h3>
 <% items.forEach(item => { %>
     
         <%= item.name %>: <%= item.description %>
@@ -16,8 +16,12 @@
         
 <% }); %>
 
-<% childItems.forEach(item => { %>
-    
+<br>
+<h3>Tasks</h3>
+
+<ul>
+        <% childItems.forEach(item => { %>
+        <li>                
         <%= item.name %>: <%= item.description %>
         <br>
         Created At: <%= item.created_at %>
@@ -26,8 +30,23 @@
         <br>
         author: <%= item.author %>
         <%= item.showTest() %>
-
         <br>
-<% }); %>
+        </li>
+        <% }); %>
+</ul>
 
+<!-- add new task of this project -->
+<h3>Add Task</h3>
+
+<form action="/tasks/add" method="post">
+        <input name="project_id" type="hidden" value="<%= projectInformation.id %>">
+        <input name="name" type="text" >
+        <input name="description" type="text">
+        <button>Add</button>
+</form>
+
+
+<br>
+<br>
+<br>
 <%- include("../footer") %>

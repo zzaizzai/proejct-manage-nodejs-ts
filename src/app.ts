@@ -2,11 +2,15 @@ import express, { Request, Response } from 'express';
 import routeRouter from './routes/route';
 import projectRouter from './routes/projects';
 import taskRouter from './routes/tasks';
+const bodyParser = require('body-parser');
 import { getUsers, resetTable ,createUser} from './db';
+
 const path = require('path')
 const app = express();
 
 app
+.use(bodyParser.urlencoded({ extended: false }))
+.use(bodyParser.json())
 .use(express.static(path.join(__dirname, '../public')))
 .set('views', path.join(__dirname, 'views'))
 .set('view engine', 'ejs');

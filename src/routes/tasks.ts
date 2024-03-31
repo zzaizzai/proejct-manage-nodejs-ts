@@ -24,6 +24,23 @@ router.get('/reset', async (req, res) => {
     }
 });
 
+router.post('/add', async (req, res) => {
+    const name = req.body.name as string;
+    const description = req.body.description as string;
+    const projectId: number | undefined = req.body.project_id;
+    console.log(name, description, projectId)
+
+
+    if (!name || !description) {
+        console.log('no name or description')
+        return res.redirect(`/projects/detail?id=${projectId}`)
+    }
+
+    await Task.createTask({name: name, description: description, parentProjectId: projectId, author: 'testuser' })
+    return res.redirect(`/projects/detail?id=${projectId}`)
+
+})
+
 router.get('/create', async (req, res) => {
 
     const name = req.query.name as string;
@@ -44,10 +61,10 @@ router.get('/create', async (req, res) => {
 
     try {
         await Task.createTask({name: name, description: description, parentProjectId: parentProjectIdNumber})
-        res.redirect('/tasks/list')
+        return res.redirect('/tasks/list')
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'Failed to retrieve projects' });
+        return res.status(500).json({ error: 'Failed to retrieve projects' });
     }
 });
 
