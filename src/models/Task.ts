@@ -40,7 +40,6 @@ export class Task extends BasePost {
         this.parentProjectId = parentProjectId
     }
 
-
     displayInfo(): TaskData {
         return { ...super.displayInfo(), dueDate: this.dueDate };
     }
@@ -61,7 +60,6 @@ export class Task extends BasePost {
                 resolve();
             });
         });
-
     }
 
     static dropTaskTable(): Promise<void> {
@@ -79,7 +77,6 @@ export class Task extends BasePost {
         }
     };
 
-
     static createTable = async (): Promise<void> => {
 
         const sql = `
@@ -87,8 +84,8 @@ export class Task extends BasePost {
             id INTEGER PRIMARY KEY,
             name TEXT NOT NULL,
             description TEXT,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            created_at TIMESTAMP  DEFAULT (DATETIME(CURRENT_TIMESTAMP,'localtime')),
+            updated_at TIMESTAMP  DEFAULT (DATETIME(CURRENT_TIMESTAMP,'localtime')),
             author TEXT NOT NULL,
             parent_project_id INTEGER
         )`;
@@ -103,17 +100,27 @@ export class Task extends BasePost {
         });
     }
 
-    static getAllTasks = async (): Promise<any[]> => {
-        return this.getAll(this.TABLE_NAME)
+    static getAllTasks = async (): Promise<Task[]> => {
+        const rows = await this.getAll(this.TABLE_NAME)
+
+        const tasks: Task[] = rows.map((row: any) => {
+            return new Task({
+                id: row.id,
+                name: row.name,
+                description: row.description,
+                created_at: row.created_at,
+                updated_at: row.updated_at,
+                author: row.author,
+                parentProjectId: row.parent_project_id
+            });
+        });
+
+        return tasks
     };
 
-    showTest(): string {
-        return 'good'
-    }
-
-    static async getTasksWithParentProjectId(parentProjectId: number): Promise<Task[]> {
+    static async getTasksWithParentProjectId(parentProjectId: number, order: string = "DESC"): Promise<Task[]> {
         try {
-            const sql = `SELECT * FROM ${this.TABLE_NAME} WHERE parent_project_id = ?`;
+            const sql = `SELECT * FROM ${this.TABLE_NAME} WHERE parent_project_id = ? ORDER BY created_at ${order} ;`;
             const rows = await new Promise<any[]>((resolve, reject) => {
                 db.all(sql, [parentProjectId], (err, rows) => {
                     if (err) {

@@ -1,4 +1,6 @@
 import { db } from '../db'
+import moment from 'moment';
+
 
 export interface BasePostData {
     id: number;
@@ -31,7 +33,18 @@ export abstract class BasePost implements BasePostData {
         return { id: this.id, name: this.name, description: this.description, created_at: this.created_at, updated_at: this.updated_at, author: this.author }
     }
 
-    static dropTable = async (tableName: string) => {
+    displayCreatedAt(): string {
+        return this._datetimeFormat(this.created_at);
+    }
+    displayUpdatedAt(): string {
+        return this._datetimeFormat(this.updated_at);
+    }
+
+    _datetimeFormat(datetime: Date): string {
+        return moment(datetime).format('YY-MM-DD HH:mm:ss');
+    }
+
+    static dropTable = async (tableName: string): Promise<void> => {
         const sql = `DROP TABLE IF EXISTS  ${tableName};`;
         return new Promise<void>((resolve, reject) => {
             db.run(sql, (err) => {
@@ -46,8 +59,8 @@ export abstract class BasePost implements BasePostData {
     };
 
 
-    static getAll = async (tableName: string) => {
-        const sql = `SELECT * FROM ${tableName};`;
+    static getAll = async (tableName: string, order: string = 'DESC') => {
+        const sql = `SELECT * FROM ${tableName} ORDER BY created_at ${order} ;`;
         return new Promise<any[]>((resolve, reject) => {
             db.all(sql, (err, rows) => {
                 if (err) {

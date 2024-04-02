@@ -5,7 +5,7 @@ class Project extends BasePost {
 
     static TABLE_NAME: string = 'projects'
 
-    static createProject = async (name: string = 'unknowon', description: string = 'no description', author: string = 'unknown') => {
+    static createProject = async (name: string = 'unknowon', description: string = 'no description', author: string = 'unknown'): Promise<void> => {
 
         const sql =                 `
         INSERT INTO projects (name, description, author) VALUES (?, ?, ?);
@@ -19,15 +19,14 @@ class Project extends BasePost {
                 resolve();
             });
         });
-
     }
 
-    static getProjects =  async (id: number) => {
+    static getProjectsWithId =  async (id: number): Promise<Project[]> => {
 
         const sql = `
         SELECT * from ${this.TABLE_NAME} WHERE id = ? ;
         `;
-        return new Promise<any[]>((resolve, reject) => {
+        const getProjects =  new Promise<any[]>((resolve, reject) => {
             db.all(sql, [id], (err, rows) => {
                 if (err) {
                     reject(err);
@@ -36,6 +35,21 @@ class Project extends BasePost {
                 resolve(rows);
             });
         });
+        const rows = await getProjects
+        const projects: Project[] = rows.map((row: any) => {
+            return new Project({
+                id: row.id,
+                name: row.name,
+                description: row.description,
+                created_at: row.created_at,
+                updated_at: row.updated_at,
+                author: row.author
+            });
+        });
+
+        return projects
+
+
     }
 
     static createTable = async () => {
@@ -45,8 +59,8 @@ class Project extends BasePost {
             id INTEGER PRIMARY KEY,
             name TEXT NOT NULL,
             description TEXT,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            created_at TIMESTAMP  DEFAULT (DATETIME(CURRENT_TIMESTAMP,'localtime')),
+            updated_at TIMESTAMP  DEFAULT (DATETIME(CURRENT_TIMESTAMP,'localtime')),
             author TEXT NOT NULL
         )
     `;
@@ -66,7 +80,7 @@ class Project extends BasePost {
     }
 
 
-    static resetTable = async () => {
+    static resetTable = async (): Promise<void> => {
         try {
             await this.dropProjectTable()
             await this.createTable()
@@ -77,17 +91,21 @@ class Project extends BasePost {
         }
     };
 
-    static getAllProjects = async () => {
-        const sql = 'SELECT * FROM projects';
-        return new Promise<any[]>((resolve, reject) => {
-            db.all(sql, (err, rows) => {
-                if (err) {
-                    reject(err);
-                    return;
-                }
-                resolve(rows);
+    static getAllProjects = async (): Promise<Project[]> => {
+
+        const rows = await this.getAll(this.TABLE_NAME)
+        const projects: Project[] = rows.map((row: any) => {
+            return new Project({
+                id: row.id,
+                name: row.name,
+                description: row.description,
+                created_at: row.created_at,
+                updated_at: row.updated_at,
+                author: row.author
             });
         });
+
+        return projects
     };
 }
 

@@ -2,20 +2,26 @@
 <%- include("../components/navbar") %>
 <%- include("../components/task_menu") %>
 
-<ul>
+<ul class="list-group task-list">
     <% tasks.forEach(task => { %>
-        <li>
-            <%= task.name %>: <%= task.description %>
-            <br>
-            Created At: <%= task.created_at %>
-            <br>
-            Updated At: <%= task.updated_at %>
-            <br>
-            author: <%= task.author %>
-            
+        <li class="list-group-item task-item">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="task-details">
+                        <h3 class="task-name"><%= task.name %></h3>
+                        <p class="task-description"><%= task.description %></p>
+                        <p class="task-author">Author: <%= task.author %></p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <p class="task-date">Created At: <%= task.displayCreatedAt() %></p>
+                </div>
+                <div class="col-md-3">
+                    <p class="task-date">Updated At: <%= task.displayUpdatedAt() %></p>
+                </div>
+            </div>
         </li>
     <% }); %>
 </ul>
-
 
 <%- include("../footer") %>

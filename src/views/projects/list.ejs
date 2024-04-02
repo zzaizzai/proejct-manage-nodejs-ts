@@ -2,17 +2,26 @@
 <%- include("../components/navbar") %>
 <%- include("../components/project_menu") %>
 
-<ul>
+
+
+<ul class="list-group project-list">
     <% projects.forEach(project => { %>
-        <li>
-            <a href="/projects/detail?id=<%= project.id %>"><%= project.name %>: <%= project.description %></a>
-            <br>
-            Created At: <%= project.created_at %>
-            <br>
-            Updated At: <%= project.updated_at %>
-            <br>
-            author: <%= project.author %>
-            
+        <li class="list-group-item project">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="project-details">
+                        <h3 class="project-name"><a href="/projects/detail?id=<%= project.id %>"><%= project.id %>. <%= project.name %></a></h3>
+                        <p class="project-description"><%= project.description %></p>
+                        <p class="project-author">Author: <%= project.author %></p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <p class="project-date">Created At: <%= project.displayCreatedAt() %></p>
+                </div>
+                <div class="col-md-3">
+                    <p class="project-date">Updated At: <%= project.displayUpdatedAt() %></p>
+                </div>
+            </div>
         </li>
     <% }); %>
 </ul>

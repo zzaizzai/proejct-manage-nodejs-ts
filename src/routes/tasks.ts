@@ -9,7 +9,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/list', async (req, res) => {
-    const tasks = await Task.getAllTasks();
+    const tasks: Task[] = await Task.getAllTasks();
 
     res.render('tasks/list', { name: 'task page', tasks: tasks });
 });
@@ -28,8 +28,6 @@ router.post('/add', async (req, res) => {
     const name = req.body.name as string;
     const description = req.body.description as string;
     const projectId: number | undefined = req.body.project_id;
-    console.log(name, description, projectId)
-
 
     if (!name || !description) {
         console.log('no name or description')

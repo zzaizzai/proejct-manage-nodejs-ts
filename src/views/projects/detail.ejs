@@ -3,7 +3,7 @@
 <%- include("../components/project_menu") %>
 
 
-<h3>Project Detail Page</h3>
+<h2>Project Detail Page</h2>
 <% items.forEach(item => { %>
     
         <%= item.name %>: <%= item.description %>
@@ -17,23 +17,7 @@
 <% }); %>
 
 <br>
-<h3>Tasks</h3>
-
-<ul>
-        <% childItems.forEach(item => { %>
-        <li>                
-        <%= item.name %>: <%= item.description %>
-        <br>
-        Created At: <%= item.created_at %>
-        <br>
-        Updated At: <%= item.updated_at %>
-        <br>
-        author: <%= item.author %>
-        <%= item.showTest() %>
-        <br>
-        </li>
-        <% }); %>
-</ul>
+<h2>Tasks</h2>
 
 <!-- add new task of this project -->
 <h3>Add Task</h3>
@@ -44,6 +28,28 @@
         <input name="description" type="text">
         <button>Add</button>
 </form>
+
+<ul class="list-group task-list">
+        <% childItems.forEach(task => { %>
+            <li class="list-group-item task-item">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="task-details">
+                            <h3 class="task-name"><%= task.name %></h3>
+                            <p class="task-description"><%= task.description %></p>
+                            <p class="task-author">Author: <%= task.author %></p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <p class="task-date">Created At: <%= task.displayCreatedAt() %></p>
+                    </div>
+                    <div class="col-md-3">
+                        <p class="task-date">Updated At: <%= task.displayUpdatedAt() %></p>
+                    </div>
+                </div>
+            </li>
+        <% }); %>
+    </ul>
 
 
 <br>
