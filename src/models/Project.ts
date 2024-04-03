@@ -93,7 +93,7 @@ class Project extends BasePost {
 
     static getAllProjects = async (): Promise<Project[]> => {
 
-        const rows = await this.getAll(this.TABLE_NAME)
+        const rows = await this.getAllItem(this.TABLE_NAME)
         const projects: Project[] = rows.map((row: any) => {
             return new Project({
                 id: row.id,
@@ -107,6 +107,34 @@ class Project extends BasePost {
 
         return projects
     };
+
+    static async getProjectWithId(id: number, order: string = "DESC"): Promise<Project> {
+        try {
+            const row = await this.getItemWithId(this.TABLE_NAME, id, order)
+
+            if (row.length === 0) {
+                throw new Error('Task not found')
+            }
+
+            const tasks: Project = new Project({
+                    id: row.id,
+                    name: row.name,
+                    description: row.description,
+                    created_at: row.created_at,
+                    updated_at: row.updated_at,
+                    author: row.author
+            });
+
+            return tasks;
+        } catch (error) {
+            throw new Error('Failed to retrieve tasks with parent project ID');
+        }
+    }
+
+
 }
+
+
+
 
 export default Project;

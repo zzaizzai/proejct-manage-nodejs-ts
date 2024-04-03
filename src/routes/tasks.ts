@@ -1,6 +1,7 @@
 // porjects.ts
 import express from 'express';
 import { Task } from '../models/Task';
+import Project from '../models/Project';
 
 const router = express.Router();
 
@@ -65,5 +66,29 @@ router.get('/create', async (req, res) => {
         return res.status(500).json({ error: 'Failed to retrieve projects' });
     }
 });
+
+router.get('/detail', async (req, res) => {
+
+    const idString = req.query.id as string;
+    const idNumber = parseInt(idString, 10);
+
+    if (isNaN(idNumber)) {
+        console.error('Failed to parse id:', idString);
+        return res.status(500).json({ error: 'Bed Method' });
+    }
+
+
+    try {
+
+        const task = await Task.getTaskWithId(idNumber);
+        const project = await Project.getProjectWithId(idNumber)
+
+        res.render('tasks/detail', { projectInformation: {id: project.id } , item: task, parentItem: project });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to retrieve projects' });
+    }
+});
+
 
 export default router;

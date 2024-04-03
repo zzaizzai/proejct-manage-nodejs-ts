@@ -33,6 +33,16 @@ export abstract class BasePost implements BasePostData {
         return { id: this.id, name: this.name, description: this.description, created_at: this.created_at, updated_at: this.updated_at, author: this.author }
     }
 
+    displayTime(): string {
+        const created = this.displayCreatedAt()
+        const updated = this.displayUpdatedAt()
+
+        if ( created != updated) {
+            return `${created}(${updated})`
+        }
+        return created
+    }
+
     displayCreatedAt(): string {
         return this._datetimeFormat(this.created_at);
     }
@@ -58,8 +68,20 @@ export abstract class BasePost implements BasePostData {
         });
     };
 
+    static getItemWithId = async (tableName:string, id: number, order: string = 'DESC'): Promise<any> => {
+        const sql = `SELECT * FROM ${tableName} where id = ${id} ORDER BY created_at ${order} ;`;
+        return new Promise<any>((resolve, reject) => {
+            db.all(sql, (err, rows) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve(rows[0]);
+            });
+        });
+    }
 
-    static getAll = async (tableName: string, order: string = 'DESC') => {
+    static getAllItem = async (tableName: string, order: string = 'DESC') => {
         const sql = `SELECT * FROM ${tableName} ORDER BY created_at ${order} ;`;
         return new Promise<any[]>((resolve, reject) => {
             db.all(sql, (err, rows) => {

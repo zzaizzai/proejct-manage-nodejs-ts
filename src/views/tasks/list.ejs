@@ -8,7 +8,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="task-details">
-                        <h3 class="task-name"><%= task.name %></h3>
+                        <h3 class="task-name"><a href="/tasks/detail?id=<%= task.id %>"><%= task.name %></a></h3>
                         <p class="task-description"><%= task.description %></p>
                         <p class="task-author">Author: <%= task.author %></p>
                     </div>

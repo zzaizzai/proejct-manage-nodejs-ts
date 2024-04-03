@@ -5,15 +5,26 @@
 
 <h2>Project Detail Page</h2>
 <% items.forEach(item => { %>
-    
-        <%= item.name %>: <%= item.description %>
-        <br>
-        Created At: <%= item.created_at %>
-        <br>
-        Updated At: <%= item.updated_at %>
-        <br>
-        author: <%= item.author %>
-        
+
+    <ul class="list-group task-list">
+        <li class="list-group-item task-item">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="task-details">
+                        <h3 class="task-name"><%= item.name %></h3>
+                        <p class="task-description"><%= item.description %></p>
+                        <p class="task-author">Author: <%= item.author %></p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <p class="task-date">Created At: <%= item.displayCreatedAt() %></p>
+                </div>
+                <div class="col-md-3">
+                    <p class="task-date">Updated At: <%= item.displayUpdatedAt() %></p>
+                </div>
+            </div>
+        </li>
+    </ul>
 <% }); %>
 
 <br>

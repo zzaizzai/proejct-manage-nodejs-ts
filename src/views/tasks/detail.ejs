@@ -1,0 +1,57 @@
+<%- include("../header") %> 
+<%- include("../components/navbar") %>
+<%- include("../components/project_menu") %>
+
+<h2>Parent Project</h2>
+
+<ul class="list-group task-list">
+    <li class="list-group-item task-item">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="task-details">
+                    <h3 class="task-name"><%= parentItem.name %></h3>
+                    <p class="task-description"><%= parentItem.description %></p>
+                    <p class="task-author">Author: <%= parentItem.author %></p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <p class="task-date">Created At: <%= parentItem.displayTime() %></p>
+            </div>
+            <!-- <div class="col-md-3">
+                <p class="task-date">Updated At: <%= parentItem.displayUpdatedAt() %></p>
+            </div> -->
+        </div>
+    </li>
+</ul>
+
+
+
+
+<h2>Task Detail Page</h2>
+    
+    <ul class="list-group task-list">
+        <li class="list-group-item task-item">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="task-details">
+                        <h3 class="task-name"><%= item.name %></h3>
+                        <p class="task-description"><%= item.description %></p>
+                        <p class="task-author">Author: <%= item.author %></p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <p class="task-date">Created At: <%= item.displayTime() %></p>
+                </div>
+                <!-- <div class="col-md-3">
+                    <p class="task-date">Updated At: <%= item.displayUpdatedAt() %></p>
+                </div> -->
+            </div>
+        </li>
+    </ul>
+<br>
+
+
+<br>
+<br>
+<br>
+<%- include("../footer") %>

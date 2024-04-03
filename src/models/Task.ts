@@ -77,6 +77,32 @@ export class Task extends BasePost {
         }
     };
 
+
+
+    static getTaskWithId =  async (id: number): Promise<Task> => {
+
+        const row = await this.getItemWithId(this.TABLE_NAME, id)
+
+        if (row.length === 0) {
+            throw new Error('Task not found')
+        }
+
+        const project: Task = 
+            new Task({
+                id: row.id,
+                name: row.name,
+                description: row.description,
+                created_at: row.created_at,
+                updated_at: row.updated_at,
+                author: row.author,
+                parentProjectId: row.parent_project_id
+        });
+
+        return project
+    }
+
+
+
     static createTable = async (): Promise<void> => {
 
         const sql = `
@@ -101,7 +127,8 @@ export class Task extends BasePost {
     }
 
     static getAllTasks = async (): Promise<Task[]> => {
-        const rows = await this.getAll(this.TABLE_NAME)
+        
+        const rows = await this.getAllItem(this.TABLE_NAME)
 
         const tasks: Task[] = rows.map((row: any) => {
             return new Task({
