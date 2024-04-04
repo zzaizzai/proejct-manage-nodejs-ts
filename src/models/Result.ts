@@ -2,18 +2,17 @@ import { db } from '../db'
 import { BasePost } from './BasePost'
 import { BasePostData } from './BasePost'
 
-export interface TaskData extends BasePostData {
-    dueDate: Date;
+export interface ResultData extends BasePostData {
     parentProjectId?: number;
+    parentTaskId?: number;
 }
 
+export class Result extends BasePost {
 
-export class Task extends BasePost {
-
-    dueDate: Date;
     parentProjectId?: number;
+    parentTaskId?: number;
 
-    static TABLE_NAME: string = 'tasks'
+    static TABLE_NAME: string = 'results'
 
     constructor(
         { id = -1,
@@ -22,8 +21,8 @@ export class Task extends BasePost {
             created_at = new Date(),
             updated_at = new Date(),
             author = 'unknown',
-            duedate = new Date(),
-            parentProjectId
+            parentProjectId,
+            parentTaskId
         }:
         {
             id?: number,
@@ -33,18 +32,20 @@ export class Task extends BasePost {
             updated_at?: Date,
             author?: string,
             duedate?: Date,
-            parentProjectId?: number;
+            parentProjectId?: number,
+            parentTaskId?: number
         }) {
         super({ id, name, description, created_at, updated_at, author });
-        this.dueDate = duedate;
         this.parentProjectId = parentProjectId
+        this.parentTaskId = parentTaskId
     }
 
-    displayInfo(): TaskData {
-        return { ...super.displayInfo(), dueDate: this.dueDate };
+
+    displayInfo(): ResultData {
+        return { ...super.displayInfo(), parentProjectId: this.parentProjectId , parentTaskId: this.parentProjectId};
     }
 
-    static createTask = async (
+    static createResult = async (
         { name = 'unknowon', description = 'no description', author = 'unknown', parentProjectId }:
         { name?: string, description?: string, author?: string, parentProjectId?: number }) => {
 
@@ -62,46 +63,20 @@ export class Task extends BasePost {
         });
     }
 
-    static dropTaskTable(): Promise<void> {
+    static dropResultTable(): Promise<void> {
         return this.dropTable(this.TABLE_NAME);
     }
 
     static resetTable = async () => {
         try {
-            await this.dropTaskTable()
+            await this.dropResultTable()
             await this.createTable()
-            await this.createTask({ name: 'test', description: 'ok' })
+            await this.createResult({ name: 'testresult', description: 'ok' })
         } catch (error) {
             console.log(error)
             throw new Error('Failed to reset projects table');
         }
     };
-
-
-
-    static getTaskWithId =  async (id: number): Promise<Task> => {
-
-        const row = await this.getItemWithId(this.TABLE_NAME, id)
-
-        if (row.length === 0) {
-            throw new Error('Task not found')
-        }
-
-        const project: Task = 
-            new Task({
-                id: row.id,
-                name: row.name,
-                description: row.description,
-                created_at: row.created_at,
-                updated_at: row.updated_at,
-                author: row.author,
-                parentProjectId: row.parent_project_id
-        });
-
-        return project
-    }
-
-
 
     static createTable = async (): Promise<void> => {
 
@@ -113,7 +88,8 @@ export class Task extends BasePost {
             created_at TIMESTAMP  DEFAULT (DATETIME(CURRENT_TIMESTAMP,'localtime')),
             updated_at TIMESTAMP  DEFAULT (DATETIME(CURRENT_TIMESTAMP,'localtime')),
             author TEXT NOT NULL,
-            parent_project_id INTEGER
+            parent_project_id INTEGER,
+            parent_task_id INTEGER
         )`;
         return new Promise<void>((resolve, reject) => {
             db.run(sql, (err) => {
@@ -126,53 +102,27 @@ export class Task extends BasePost {
         });
     }
 
-    static getAllTasks = async (): Promise<Task[]> => {
+    static getAllResults = async (): Promise<Result[]> => {
         
         const rows = await this.getAllItem(this.TABLE_NAME)
 
-        const tasks: Task[] = rows.map((row: any) => {
-            return new Task({
+        const tasks: Result[] = rows.map((row: any) => {
+            return new Result({
                 id: row.id,
                 name: row.name,
                 description: row.description,
                 created_at: row.created_at,
                 updated_at: row.updated_at,
                 author: row.author,
-                parentProjectId: row.parent_project_id
+                parentProjectId: row.parent_project_id,
+                parentTaskId: row.parent_project_id
             });
         });
 
         return tasks
     };
 
-    static async getTasksWithParentProjectId(parentProjectId: number, order: string = "DESC"): Promise<Task[]> {
-        try {
-            const sql = `SELECT * FROM ${this.TABLE_NAME} WHERE parent_project_id = ? ORDER BY created_at ${order} ;`;
-            const rows = await new Promise<any[]>((resolve, reject) => {
-                db.all(sql, [parentProjectId], (err, rows) => {
-                    if (err) {
-                        reject(err);
-                        return;
-                    }
-                    resolve(rows);
-                });
-            });
 
-            const tasks: Task[] = rows.map((row: any) => {
-                return new Task({
-                    id: row.id,
-                    name: row.name,
-                    description: row.description,
-                    created_at: row.created_at,
-                    updated_at: row.updated_at,
-                    author: row.author,
-                    parentProjectId: row.parent_project_id
-                });
-            });
 
-            return tasks;
-        } catch (error) {
-            throw new Error('Failed to retrieve tasks with parent project ID');
-        }
-    }
+
 }

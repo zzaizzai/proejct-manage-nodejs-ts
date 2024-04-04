@@ -1,0 +1,28 @@
+<%- include("../header") %> 
+<%- include("../components/navbar") %>
+<%- include("../components/result_menu") %>
+
+
+<ul class="list-group item-list">
+    <% items.forEach(item => { %>
+        <li class="list-group-item item">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="item-details">
+                        <h3 class="item-name"><a href="/items/detail?id=<%= item.id %>"><%= item.id %>. <%= item.name %></a></h3>
+                        <p class="item-description"><%= item.description %></p>
+                        <p class="item-author">Author: <%= item.author %></p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <p class="item-date">Created At: <%= item.displayCreatedAt() %></p>
+                </div>
+                <div class="col-md-3">
+                    <p class="item-date">Updated At: <%= item.displayUpdatedAt() %></p>
+                </div>
+            </div>
+        </li>
+    <% }); %>
+</ul>
+
+<%- include("../footer") %>

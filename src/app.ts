@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import routeRouter from './routes/route';
 import projectRouter from './routes/projects';
 import taskRouter from './routes/tasks';
+import resultRouter from './routes/results';
 const bodyParser = require('body-parser');
 import { getUsers, resetTable ,createUser} from './db';
 
@@ -67,6 +68,7 @@ app.get('/db/create', async (req: Request, res: Response) => {
 app.use('/route', routeRouter);
 app.use('/projects', projectRouter);
 app.use('/tasks', taskRouter);
+app.use('/results', resultRouter);
 
 
 app.listen(8080, ()=> {
