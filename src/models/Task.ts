@@ -22,6 +22,7 @@ export class Task extends BasePost {
             created_at = new Date(),
             updated_at = new Date(),
             author = 'unknown',
+            is_closed = false,
             duedate = new Date(),
             parentProjectId
         }:
@@ -32,10 +33,11 @@ export class Task extends BasePost {
             created_at?: Date,
             updated_at?: Date,
             author?: string,
+            is_closed: boolean,
             duedate?: Date,
             parentProjectId?: number;
         }) {
-        super({ id, name, description, created_at, updated_at, author });
+        super({ id, name, description, created_at, updated_at, author, is_closed });
         this.dueDate = duedate;
         this.parentProjectId = parentProjectId
     }
@@ -95,6 +97,7 @@ export class Task extends BasePost {
                 created_at: row.created_at,
                 updated_at: row.updated_at,
                 author: row.author,
+                is_closed: row.is_closed,
                 parentProjectId: row.parent_project_id
         });
 
@@ -107,12 +110,7 @@ export class Task extends BasePost {
 
         const sql = `
         CREATE TABLE IF NOT EXISTS ${this.TABLE_NAME} (
-            id INTEGER PRIMARY KEY,
-            name TEXT NOT NULL,
-            description TEXT,
-            created_at TIMESTAMP  DEFAULT (DATETIME(CURRENT_TIMESTAMP,'localtime')),
-            updated_at TIMESTAMP  DEFAULT (DATETIME(CURRENT_TIMESTAMP,'localtime')),
-            author TEXT NOT NULL,
+            ${this.getCommonColumns()},
             parent_project_id INTEGER
         )`;
         return new Promise<void>((resolve, reject) => {
@@ -138,6 +136,7 @@ export class Task extends BasePost {
                 created_at: row.created_at,
                 updated_at: row.updated_at,
                 author: row.author,
+                is_closed: row.is_closed,
                 parentProjectId: row.parent_project_id
             });
         });
@@ -166,6 +165,7 @@ export class Task extends BasePost {
                     created_at: row.created_at,
                     updated_at: row.updated_at,
                     author: row.author,
+                    is_closed: row.is_closed,
                     parentProjectId: row.parent_project_id
                 });
             });

@@ -12,6 +12,7 @@ export class Result extends BasePost {
     parentProjectId?: number;
     parentTaskId?: number;
 
+
     static TABLE_NAME: string = 'results'
 
     constructor(
@@ -21,6 +22,7 @@ export class Result extends BasePost {
             created_at = new Date(),
             updated_at = new Date(),
             author = 'unknown',
+            is_closed = false,
             parentProjectId,
             parentTaskId
         }:
@@ -31,11 +33,12 @@ export class Result extends BasePost {
             created_at?: Date,
             updated_at?: Date,
             author?: string,
+            is_closed: boolean,
             duedate?: Date,
             parentProjectId?: number,
             parentTaskId?: number
         }) {
-        super({ id, name, description, created_at, updated_at, author });
+        super({ id, name, description, created_at, updated_at, author, is_closed });
         this.parentProjectId = parentProjectId
         this.parentTaskId = parentTaskId
     }
@@ -82,14 +85,10 @@ export class Result extends BasePost {
 
         const sql = `
         CREATE TABLE IF NOT EXISTS ${this.TABLE_NAME} (
-            id INTEGER PRIMARY KEY,
-            name TEXT NOT NULL,
-            description TEXT,
-            created_at TIMESTAMP  DEFAULT (DATETIME(CURRENT_TIMESTAMP,'localtime')),
-            updated_at TIMESTAMP  DEFAULT (DATETIME(CURRENT_TIMESTAMP,'localtime')),
-            author TEXT NOT NULL,
+            ${this.getCommonColumns()},
             parent_project_id INTEGER,
             parent_task_id INTEGER
+
         )`;
         return new Promise<void>((resolve, reject) => {
             db.run(sql, (err) => {
@@ -114,6 +113,7 @@ export class Result extends BasePost {
                 created_at: row.created_at,
                 updated_at: row.updated_at,
                 author: row.author,
+                is_closed: row.is_closed,
                 parentProjectId: row.parent_project_id,
                 parentTaskId: row.parent_project_id
             });

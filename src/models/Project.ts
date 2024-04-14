@@ -43,7 +43,8 @@ class Project extends BasePost {
                 description: row.description,
                 created_at: row.created_at,
                 updated_at: row.updated_at,
-                author: row.author
+                author: row.author,
+                is_closed: row.is_closed
             });
         });
 
@@ -56,12 +57,7 @@ class Project extends BasePost {
 
         const sql = `
         CREATE TABLE IF NOT EXISTS ${this.TABLE_NAME} (
-            id INTEGER PRIMARY KEY,
-            name TEXT NOT NULL,
-            description TEXT,
-            created_at TIMESTAMP  DEFAULT (DATETIME(CURRENT_TIMESTAMP,'localtime')),
-            updated_at TIMESTAMP  DEFAULT (DATETIME(CURRENT_TIMESTAMP,'localtime')),
-            author TEXT NOT NULL
+            ${this.getCommonColumns()}
         )
     `;
         return new Promise<void>((resolve, reject) => {
@@ -101,7 +97,8 @@ class Project extends BasePost {
                 description: row.description,
                 created_at: row.created_at,
                 updated_at: row.updated_at,
-                author: row.author
+                author: row.author,
+                is_closed: row.is_closed
             });
         });
 
@@ -122,7 +119,8 @@ class Project extends BasePost {
                     description: row.description,
                     created_at: row.created_at,
                     updated_at: row.updated_at,
-                    author: row.author
+                    author: row.author,
+                    is_closed: row.is_closed
             });
 
             return tasks;

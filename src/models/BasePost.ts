@@ -9,6 +9,7 @@ export interface BasePostData {
     created_at: Date;
     updated_at: Date;
     author: string;
+    is_closed: boolean;
 }
 
 export abstract class BasePost implements BasePostData {
@@ -17,20 +18,35 @@ export abstract class BasePost implements BasePostData {
     description: string;
     created_at: Date;
     updated_at: Date;
-    author: string
+    author: string;
+    is_closed: boolean
 
-    constructor({ id = -1, name, description, created_at = new Date(), updated_at = new Date(), author = 'unknown' }:
-        { id?: number, name: string, description: string, created_at?: Date, updated_at?: Date, author?: string }) {
+    constructor({ id = -1, name, description, created_at = new Date(), updated_at = new Date(), author = 'unknown', is_closed = false }:
+        { id?: number, name: string, description: string, created_at?: Date, updated_at?: Date, author?: string, is_closed: boolean }) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.created_at = created_at;
         this.updated_at = updated_at;
         this.author = author;
+        this.is_closed = is_closed;
+    }
+
+    static getCommonColumns(): string {
+        const sql: string = `
+        id INTEGER PRIMARY KEY,
+        name TEXT NOT NULL,
+        description TEXT,
+        created_at TIMESTAMP  DEFAULT (DATETIME(CURRENT_TIMESTAMP,'localtime')),
+        updated_at TIMESTAMP  DEFAULT (DATETIME(CURRENT_TIMESTAMP,'localtime')),
+        author TEXT NOT NULL,
+        is_closed INTEGER DEFAULT 0`
+
+        return sql
     }
 
     displayInfo(): BasePostData {
-        return { id: this.id, name: this.name, description: this.description, created_at: this.created_at, updated_at: this.updated_at, author: this.author }
+        return { id: this.id, name: this.name, description: this.description, created_at: this.created_at, updated_at: this.updated_at, author: this.author, is_closed: this.is_closed }
     }
 
     displayTime(): string {
