@@ -5,8 +5,22 @@ import { Task } from '../models/Task';
 
 const router = express.Router();
 
+
+router.get('/flashtest', (req, res) => {
+    req.flash('waring', 'waring')
+    req.flash('success', 'success')
+    res.redirect('/projects')
+})
+
+
 router.get('/', (req, res) => {
-    res.render('projects/index', { name: 'project page', message: 'This is the route page' });
+    res.render('projects/index',
+        {
+            name: 'project page',
+            flash_waring_msgs: req.flash('waring'),
+            flash_success_msgs: req.flash('success')
+        }
+    );
 });
 
 router.get('/list', async (req, res) => {
@@ -49,7 +63,7 @@ router.get('/detail', async (req, res) => {
             return res.redirect('/projects/list')
         }
 
-        res.render('projects/detail', { projectInformation: {id: projects[0].id } , items: projects, childItems: tasks });
+        res.render('projects/detail', { projectInformation: { id: projects[0].id }, items: projects, childItems: tasks });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Failed to retrieve projects' });

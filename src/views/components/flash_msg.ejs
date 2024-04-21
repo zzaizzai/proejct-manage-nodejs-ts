@@ -1,0 +1,16 @@
+<% if (locals.flash_waring_msgs) { %>
+    <% if (flash_waring_msgs.length > 0) { %>
+        <div class="flash-message alert alert-warning" role="alert">
+          <%= flash_waring_msgs[0] %>
+        </div>
+    <% } %>
+<% } %>
+
+<% if (locals.flash_success_msgs) { %>
+    <% if (flash_success_msgs.length > 0) { %>
+        <div class="flash-message alert alert-primary" role="alert">
+          <%= flash_success_msgs[0] %>
+        </div>
+    <% } %>
+<% } %>
+

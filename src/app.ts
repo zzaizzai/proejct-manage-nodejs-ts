@@ -5,19 +5,28 @@ import taskRouter from './routes/tasks';
 import resultRouter from './routes/results';
 const bodyParser = require('body-parser');
 import { getUsers, resetTable ,createUser} from './db';
-
+import session from 'express-session';
+import flash from 'express-flash';
 const path = require('path')
 const app = express();
 
 app
+.use(session( {
+    secret: 'your-secret-key', 
+    resave: false,
+    saveUninitialized: true
+}))
 .use(bodyParser.urlencoded({ extended: false }))
 .use(bodyParser.json())
 .use(express.static(path.join(__dirname, '../public')))
+.use(flash())
 .set('views', path.join(__dirname, 'views'))
 .set('view engine', 'ejs');
 
 
 app.get('/', (req: Request, res: Response)=> {
+    req.flash('good')
+
     res.render('index', { name: 'Index page' });
 })
 
