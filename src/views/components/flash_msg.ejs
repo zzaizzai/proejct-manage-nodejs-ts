@@ -1,16 +1,48 @@
 <% if (locals.flash_waring_msgs) { %>
     <% if (flash_waring_msgs.length > 0) { %>
-        <div class="flash-message alert alert-warning" role="alert">
+        <div class="flash-message alert alert-warning d-flex justify-content-between align-items-center" role="alert">
           <%= flash_waring_msgs[0] %>
+          <button type="button" class="close alert-close-btn-lg" aria-label="Close" onclick="closeAlert(this)">
+            <span aria-hidden="true">&times;</span>
+        </button>
         </div>
     <% } %>
 <% } %>
 
 <% if (locals.flash_success_msgs) { %>
     <% if (flash_success_msgs.length > 0) { %>
-        <div class="flash-message alert alert-primary" role="alert">
-          <%= flash_success_msgs[0] %>
+        <div class="flash-message alert alert-primary d-flex justify-content-between align-items-center" role="alert">
+            <%= flash_success_msgs[0] %>
+            <button type="button" class="close alert-close-btn-lg" aria-label="Close" onclick="closeAlert(this)">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
     <% } %>
 <% } %>
+
+<style>
+    .flash-message {
+        display: flex;
+    }
+    
+    .close {
+        background-color: transparent;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+    }
+
+    .alert-close-btn-lg {
+        font-size: 1.5rem;
+    }
+</style>
+
+<script>
+    function closeAlert(button) {
+        var parentDiv = button.parentNode;
+        parentDiv.parentNode.removeChild(parentDiv);
+    }
+</script>
+
+
 
