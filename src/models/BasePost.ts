@@ -97,8 +97,8 @@ export abstract class BasePost implements BasePostData {
         });
     }
 
-    static getAllItem = async (tableName: string, order: string = 'DESC') => {
-        const sql = `SELECT * FROM ${tableName} ORDER BY created_at ${order} ;`;
+    static getAllItem = async (tableName: string, sort: string = 'DESC') => {
+        const sql = `SELECT * FROM ${tableName} ORDER BY id ${sort} ;`;
         return new Promise<any[]>((resolve, reject) => {
             db.all(sql, (err, rows) => {
                 if (err) {

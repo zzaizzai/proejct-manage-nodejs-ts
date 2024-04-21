@@ -1,7 +1,7 @@
-<% if (locals.flash_waring_msgs) { %>
-    <% if (flash_waring_msgs.length > 0) { %>
-        <div class="flash-message alert alert-warning d-flex justify-content-between align-items-center" role="alert">
-          <%= flash_waring_msgs[0] %>
+<% if (locals.flash_error_msgs) { %>
+    <% if (flash_error_msgs.length > 0) { %>
+        <div class="flash-message alert alert-danger d-flex justify-content-between align-items-center" role="alert">
+          <%= flash_error_msgs[0] %>
           <button type="button" class="close alert-close-btn-lg" aria-label="Close" onclick="closeAlert(this)">
             <span aria-hidden="true">&times;</span>
         </button>

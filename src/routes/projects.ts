@@ -17,7 +17,7 @@ router.get('/', (req, res) => {
     res.render('projects/index',
         {
             name: 'project page',
-            flash_waring_msgs: req.flash('waring'),
+            flash_error_msgs: req.flash('waring'),
             flash_success_msgs: req.flash('success')
         }
     );
@@ -29,7 +29,12 @@ router.get('/list', async (req, res) => {
         res.render('projects/list', { name: 'show all', projects: projects });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'Failed to retrieve projects' });
+        res.render('projects/list',
+            {
+                projects: [],
+                flash_error_msgs: ['failed to get project list'],
+                flash_success_msgs: null
+            });
     }
 });
 
