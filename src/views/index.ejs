@@ -3,4 +3,34 @@
 
 <h1>Hello <%= name %></h1>
 
+<button class="btn btn-outline-primary"  onclick="ResetAllTables()">
+    Reset Database 
+</button>
+
+<script>
+    function ResetAllTables() {
+        showSpinner()
+        fetch('/api/reset_all_tables', {
+            method: 'GET',
+        }).then( res => {
+
+            if (res.ok) {
+                return res.json()
+            } else {
+                throw new Error('Error with API')
+            }
+        })
+        .then(data => {
+            console.log(data)
+        })
+        .catch(error => {
+            console.error(error)
+        })
+        .finally(() => {
+            hideSpinner()
+        })
+    }
+
+</script>
+
 <%- include("./footer") %>

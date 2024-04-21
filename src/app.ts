@@ -3,6 +3,7 @@ import routeRouter from './routes/route';
 import projectRouter from './routes/projects';
 import taskRouter from './routes/tasks';
 import resultRouter from './routes/results';
+import apiRouter from './routes/api';
 const bodyParser = require('body-parser');
 import { getUsers, resetTable ,createUser} from './db';
 import session from 'express-session';
@@ -78,6 +79,7 @@ app.use('/route', routeRouter);
 app.use('/projects', projectRouter);
 app.use('/tasks', taskRouter);
 app.use('/results', resultRouter);
+app.use('/api', apiRouter);
 
 
 app.listen(8080, ()=> {
