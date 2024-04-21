@@ -2,12 +2,9 @@ import express from 'express';
 import Project from '../models/Project';
 import { Task } from '../models/Task';
 import { Result } from '../models/Result';
+import { sleep }  from '../utils/func_times'
 
 const router = express.Router();
-
-function sleep(ms: number) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
 
 router.get('/test', async (req, res) => {
     await sleep(2000);
