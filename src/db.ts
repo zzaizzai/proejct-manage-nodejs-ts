@@ -3,7 +3,7 @@
 import sqlite3 from 'sqlite3';
 
 // SQLite 데이터베이스 파일 경로
-const dbPath = './database.db';
+const dbPath = 'db/database.db';
 
 // 데이터베이스 생성 또는 연결
 export const db = new sqlite3.Database(dbPath, (err) => {
