@@ -3,6 +3,8 @@
 
 ## How to start
 ```
+git clone https://github.com/zzaizzai/project-manage-nodejs-ts.git
+
 npm install
 npm start
 ```
