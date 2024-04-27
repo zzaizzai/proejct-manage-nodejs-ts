@@ -6,7 +6,7 @@ import sqlite3 from 'sqlite3';
 const dbPath = 'db/database.db';
 
 // 데이터베이스 생성 또는 연결
-export const db = new sqlite3.Database(dbPath, (err) => {
+export const db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, (err) => {
     if (err) {
         console.error('Error opening database', err);
         return;
