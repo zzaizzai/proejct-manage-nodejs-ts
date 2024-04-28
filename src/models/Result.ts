@@ -122,7 +122,7 @@ export class Result extends BasePost {
         return tasks
     };
 
-
-
-
 }
+
+
+export default Result;

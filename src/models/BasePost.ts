@@ -40,7 +40,8 @@ export abstract class BasePost implements BasePostData {
         created_at TIMESTAMP  DEFAULT (DATETIME(CURRENT_TIMESTAMP,'localtime')),
         updated_at TIMESTAMP  DEFAULT (DATETIME(CURRENT_TIMESTAMP,'localtime')),
         author TEXT NOT NULL,
-        is_closed INTEGER DEFAULT 0`
+        is_closed INTEGER DEFAULT 0
+        `
 
         return sql
     }

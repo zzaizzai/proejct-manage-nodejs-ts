@@ -176,3 +176,6 @@ export class Task extends BasePost {
         }
     }
 }
+
+
+export default Task;
