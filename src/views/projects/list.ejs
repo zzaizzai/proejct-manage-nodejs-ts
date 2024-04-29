@@ -4,22 +4,22 @@
 <%- include("../components/flash_msg") %>
 
 
-<ul class="list-group project-list">
+<ul class="list-group item-list">
     <% projects.forEach(project => { %>
         <li class="list-group-item project">
             <div class="row">
                 <div class="col-md-6">
-                    <div class="project-details">
-                        <h3 class="project-name"><a href="/projects/detail?id=<%= project.id %>"><%= project.id %>. <%= project.name %></a></h3>
-                        <p class="project-description"><%= project.description %></p>
-                        <p class="project-author">Author: <%= project.author %></p>
+                    <div class="item-details">
+                        <h3 class="item-name"><a href="/projects/detail?id=<%= project.id %>"><%= project.id %>. <%= project.name %></a></h3>
+                        <p class="item-description"><%= project.description %></p>
+                        <p class="item-author">Author: <%= project.author %></p>
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <p class="project-date">Created At: <%= project.displayCreatedAt() %></p>
+                    <p class="item-date">Created At: <%= project.displayCreatedAt() %></p>
                 </div>
                 <div class="col-md-3">
-                    <p class="project-date">Updated At: <%= project.displayUpdatedAt() %></p>
+                    <p class="item-date">Updated At: <%= project.displayUpdatedAt() %></p>
                 </div>
             </div>
         </li>

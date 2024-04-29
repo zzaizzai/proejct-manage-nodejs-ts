@@ -64,12 +64,12 @@ router.get('/detail', async (req, res) => {
 
     try {
 
-        // const result = await Result.getTaskWithId(idNumber);
-        const result : any[] = [] //temp
+        const result = await Result.getResultWithId(idNumber);
         
         const project = await Project.getProjectWithId(idNumber)
 
         res.render('results/detail', { projectInformation: {id: project.id } , item: result, parentItem: project });
+        
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Failed to retrieve projects' });

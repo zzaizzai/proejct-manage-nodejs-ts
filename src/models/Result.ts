@@ -122,6 +122,31 @@ export class Result extends BasePost {
         return tasks
     };
 
+
+    static async getResultWithId(id: number, order: string = "DESC"): Promise<Result> {
+        try {
+            const row = await this.getItemWithId(this.TABLE_NAME, id, order)
+
+            if (row.length === 0) {
+                throw new Error('Task not found')
+            }
+
+            const tasks: Result = new Result({
+                    id: row.id,
+                    name: row.name,
+                    description: row.description,
+                    created_at: row.created_at,
+                    updated_at: row.updated_at,
+                    author: row.author,
+                    is_closed: row.is_closed
+            });
+
+            return tasks;
+        } catch (error) {
+            throw new Error('Failed to retrieve tasks with parent project ID');
+        }
+    }
+
 }
 
 
