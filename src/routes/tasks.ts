@@ -28,7 +28,7 @@ router.get('/reset', async (req, res) => {
 router.post('/add', async (req, res) => {
     const name = req.body.name as string;
     const description = req.body.description as string;
-    const projectId: number | undefined = req.body.project_id;
+    const projectId: number = req.body.project_id;
 
     if (!name || !description) {
         console.log('no name or description')
@@ -81,7 +81,8 @@ router.get('/detail', async (req, res) => {
     try {
 
         const task = await Task.getTaskWithId(idNumber);
-        const project = await Project.getProjectWithId(idNumber)
+
+        const project = await Project.getProjectWithId(task.parentProjectId ?? 1)
 
         res.render('tasks/detail', { projectInformation: {id: project.id } , item: task, parentItem: project });
     } catch (error) {

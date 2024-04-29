@@ -3,14 +3,14 @@ import { BasePost } from './BasePost'
 import { BasePostData } from './BasePost'
 
 export interface ResultData extends BasePostData {
-    parentProjectId?: number;
-    parentTaskId?: number;
+    parentProjectId: number;
+    parentTaskId: number;
 }
 
 export class Result extends BasePost {
 
-    parentProjectId?: number;
-    parentTaskId?: number;
+    parentProjectId: number;
+    parentTaskId: number;
 
 
     static TABLE_NAME: string = 'results'
@@ -35,8 +35,8 @@ export class Result extends BasePost {
             author?: string,
             is_closed: boolean,
             duedate?: Date,
-            parentProjectId?: number,
-            parentTaskId?: number
+            parentProjectId: number,
+            parentTaskId: number
         }) {
         super({ id, name, description, created_at, updated_at, author, is_closed });
         this.parentProjectId = parentProjectId
@@ -49,7 +49,7 @@ export class Result extends BasePost {
     }
 
     static createResult = async (
-        { name = 'unknowon', description = 'no description', author = 'unknown', parentProjectId }:
+        { name = 'unknowon', description = 'no description', author = 'unknown', parentProjectId = 1 }:
         { name?: string, description?: string, author?: string, parentProjectId?: number }) => {
 
         const sql = `
@@ -138,7 +138,9 @@ export class Result extends BasePost {
                     created_at: row.created_at,
                     updated_at: row.updated_at,
                     author: row.author,
-                    is_closed: row.is_closed
+                    is_closed: row.is_closed,
+                    parentProjectId: row.parent_project_id,
+                    parentTaskId: row.parent_task_id
             });
 
             return tasks;

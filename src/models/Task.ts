@@ -11,7 +11,7 @@ export interface TaskData extends BasePostData {
 export class Task extends BasePost {
 
     dueDate: Date;
-    parentProjectId?: number;
+    parentProjectId: number;
 
     static TABLE_NAME: string = 'tasks'
 
@@ -35,7 +35,7 @@ export class Task extends BasePost {
             author?: string,
             is_closed: boolean,
             duedate?: Date,
-            parentProjectId?: number;
+            parentProjectId: number;
         }) {
         super({ id, name, description, created_at, updated_at, author, is_closed });
         this.dueDate = duedate;
@@ -48,7 +48,7 @@ export class Task extends BasePost {
 
     static createTask = async (
         { name = 'unknowon', description = 'no description', author = 'unknown', parentProjectId }:
-        { name?: string, description?: string, author?: string, parentProjectId?: number }) => {
+        { name?: string, description?: string, author?: string, parentProjectId: number }) => {
 
         const sql = `
         INSERT INTO ${this.TABLE_NAME} (name, description, author, parent_project_id) VALUES (?, ?, ?, ?);
@@ -72,7 +72,7 @@ export class Task extends BasePost {
         try {
             await this.dropTaskTable()
             await this.createTable()
-            await this.createTask({ name: 'test', description: 'ok' })
+            await this.createTask({ name: 'test', description: 'ok', parentProjectId: 1 })
         } catch (error) {
             console.log(error)
             throw new Error('Failed to reset projects table');

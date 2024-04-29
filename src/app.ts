@@ -28,7 +28,7 @@ app
 app.get('/', (req: Request, res: Response)=> {
     req.flash('good')
 
-    res.render('index', { name: 'Index page' });
+    res.render('index', { name: `junsai's project page` });
 })
 
 
