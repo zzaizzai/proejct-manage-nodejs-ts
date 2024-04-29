@@ -49,14 +49,14 @@ export class Result extends BasePost {
     }
 
     static createResult = async (
-        { name = 'unknowon', description = 'no description', author = 'unknown', parentProjectId = 1 }:
-        { name?: string, description?: string, author?: string, parentProjectId?: number }) => {
+        { name = 'unknowon', description = 'no description', author = 'unknown', parentProjectId = 1,  parentTaskId = 1 }:
+        { name?: string, description?: string, author?: string, parentProjectId?: number, parentTaskId?: number }) => {
 
         const sql = `
-        INSERT INTO ${this.TABLE_NAME} (name, description, author, parent_project_id) VALUES (?, ?, ?, ?);
+        INSERT INTO ${this.TABLE_NAME} (name, description, author, parent_project_id, parent_task_id) VALUES (?, ?, ?, ?, ?);
         `;
         return new Promise<void>((resolve, reject) => {
-            db.run(sql, [name, description, author, parentProjectId], (err) => {
+            db.run(sql, [name, description, author, parentProjectId, parentTaskId], (err) => {
                 if (err) {
                     reject(err);
                     return;
@@ -74,7 +74,8 @@ export class Result extends BasePost {
         try {
             await this.dropResultTable()
             await this.createTable()
-            await this.createResult({ name: 'testresult', description: 'ok' })
+            await this.createResult({ name: 'testresult', description: 'task 1 done', author: "test user1" , parentProjectId: 1, parentTaskId: 1 })
+            await this.createResult({ name: 'testresult', description: 'task 2 done', author: "test user2", parentProjectId: 1, parentTaskId: 2 })
         } catch (error) {
             console.log(error)
             throw new Error('Failed to reset projects table');

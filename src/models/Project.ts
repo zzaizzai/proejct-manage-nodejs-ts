@@ -80,7 +80,23 @@ class Project extends BasePost {
         try {
             await this.dropProjectTable()
             await this.createTable()
-            await this.createProject('test', 'ok')
+            await this.createProject('Launch Project AAA in Japan', 
+                                    `We envision that this project will create new opportunities to foster 
+                                    innovation and collaboration within our industry. By leveraging Japan's 
+                                    rich technological expertise and our company's resources, we aim to introduce 
+                                    groundbreaking solutions that address evolving market demands. Through strategic 
+                                    partnerships and localized initiatives, we aspire to establish a strong foothold in 
+                                    the Japanese market, driving sustainable growth and establishing ourselves as a key 
+                                    player in the automotive sector. `,
+                                    "test manager1")
+            await this.createProject('Develop new Product to calculate the lenght of the Earth',
+                                    `It is important to calculate the length of the Earth because 
+                                    it enables us to gain deeper insights into geographical phenomena 
+                                    and better understand the dynamics of our planet. By accurately measuring Earth's 
+                                    dimensions, we can enhance navigation systems, improve infrastructure planning, 
+                                    and advance scientific research. Moreover, it facilitates global collaboration and 
+                                    fosters a deeper appreciation for the complexity and beauty of our world.`,
+                                    "test manager2")
         } catch (error) {
             console.log(error)
             throw new Error('Failed to reset projects table');

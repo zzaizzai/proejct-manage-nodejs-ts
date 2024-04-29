@@ -72,7 +72,29 @@ export class Task extends BasePost {
         try {
             await this.dropTaskTable()
             await this.createTable()
-            await this.createTask({ name: 'test', description: 'ok', parentProjectId: 1 })
+            await this.createTask(
+                { name: 'Market Research and Analysis', 
+                description: `Conduct thorough research to understand the Japanese automotive parts sector, 
+                including market trends, consumer preferences, and regulatory requirements.`, 
+                parentProjectId: 1 ,
+                author: "test user1"
+                })
+
+            await this.createTask(
+                { name: 'Establish Local Partnerships', 
+                description: `Identify and establish partnerships with Japanese manufacturers, suppliers, 
+                            and distributors to facilitate market entry and ensure localized support.`, 
+                parentProjectId: 1 ,
+                author: "test user2"
+                })
+                                    
+            await this.createTask(
+                { name: 'Customize Product Offering', 
+                description: `Adapt the Project AAA product to meet the specific needs and preferences of the Japanese market, 
+                            considering factors such as design, features, and pricing.`, 
+                parentProjectId: 1 ,
+                author: "test user3"
+                })
         } catch (error) {
             console.log(error)
             throw new Error('Failed to reset projects table');
