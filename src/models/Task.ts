@@ -197,6 +197,15 @@ export class Task extends BasePost {
             throw new Error('Failed to retrieve tasks with parent project ID');
         }
     }
+
+
+    public async setIsClosed(): Promise<void> {
+        if (this.is_closed) {
+            return super.setIsClosed(Task.TABLE_NAME, false)
+        }
+        return super.setIsClosed(Task.TABLE_NAME, true)
+    }
+
 }
 
 

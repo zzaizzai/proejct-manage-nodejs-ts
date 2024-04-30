@@ -41,14 +41,18 @@ router.get('/get_all_results_with_parent_task_id', async (req, res) => {
 })
 
 router.post('/tasks/change_close_state', async (req, res) => {
-    const taskId = parseInt(req.query.task_id as string);
-    const state = req.query.state as string
 
-    const test = req.body.taskId as string
+    const taskId = parseInt(req.body.taskId as string)
+    const stateClosed = Boolean(parseInt(req.body.stateClosed as string))
 
-    console.log(test)
+    if (stateClosed === undefined) {
+        return res.status(500).send('Something went wrong!');
+    }
+    const task = await Task.getTaskWithId(taskId)
 
-    res.status(200).send({data: "good"})
+    await task.setIsClosed()
+
+    return res.status(200).send({data: "good"})
 })
 
 export default router;

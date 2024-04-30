@@ -50,7 +50,7 @@
 
 <ul class="list-group task-list">
         <% childItems.forEach(task => { %>
-            <li class="list-group-item task-item" data-task-id="<%= task.id %>">
+            <li class="list-group-item task-item" data-task-id="<%= task.id %>"  data-state-closed="<%= task.is_closed %>">
                 <div class="task-id" data-task-id="<%= task.id %>"></div>
                 <div class="row">
                     <div class="col-md-6">
@@ -67,8 +67,8 @@
                         <p class="task-date">Updated At: <%= task.displayUpdatedAt() %></p>
                     </div>
                     <div><%= task.is_closed %></div>
-                    <button onclick="changeTaskCloseState(this)">Change State</button>
-                    <button onclick="getAllTasksWithParentProjectId(this)">getTasksApi</button>
+                    <button onclick="changeTaskCloseStateApi(this)">Change State</button>
+                    <button onclick="getAllTasksWithParentProjectIdApi(this)">getTasksApi</button>
                 </div>
             </li>
         <% }); %>
@@ -84,13 +84,17 @@
 
 <script>
 
-function changeTaskCloseState(button) {
+function changeTaskCloseStateApi(button) {
     const taskId = button.closest('.task-item').dataset.taskId;
-
+    const stateClosed = button.closest('.task-item').dataset.stateClosed
     fetch(`/api/tasks/change_close_state`, {
         method: 'post',
+        headers: {
+            'Content-Type': 'application/json'
+        },
         body: JSON.stringify({
-            taskId: taskId
+            taskId: taskId,
+            stateClosed: stateClosed
         })
     })
     .then(response => {
@@ -101,14 +105,13 @@ function changeTaskCloseState(button) {
     })
     .then(data => {
         console.log(data.data);
-        return data.data
     })
     .catch(error => {
         console.error('Error fetching tasks:', error);
     });
 }
 
-function getAllTasksWithParentProjectId(button) {
+function getAllTasksWithParentProjectIdApi(button) {
 
     const taskId = button.closest('.task-item').dataset.taskId;
     fetch(`/api/get_all_results_with_parent_task_id?parent_project_id=${taskId}`)
@@ -120,7 +123,6 @@ function getAllTasksWithParentProjectId(button) {
     })
     .then(data => {
         console.log(data.tasks);
-        return data.tasks
     })
     .catch(error => {
         console.error('Error fetching tasks:', error);
