@@ -124,6 +124,44 @@ export class Result extends BasePost {
     };
 
 
+
+    static getAllResultsWithParentTaskId = async (parentTaskId: number, order: string = 'DESC'): Promise<Result[]> => {
+
+        try {
+            const sql = `SELECT * FROM ${this.TABLE_NAME} WHERE parent_task_id = ? ORDER BY created_at ${order} ;`;
+            const rows = await new Promise<any[]>((resolve, reject) => {
+                db.all(sql, [parentTaskId], (err, rows) => {
+                    if (err) {
+                        reject(err);
+                        return;
+                    }
+                    resolve(rows);
+                });
+            });
+
+
+        const results: Result[] = rows.map((row: any) => {
+            return new Result({
+                id: row.id,
+                name: row.name,
+                description: row.description,
+                created_at: row.created_at,
+                updated_at: row.updated_at,
+                author: row.author,
+                is_closed: row.is_closed,
+                parentProjectId: row.parent_project_id,
+                parentTaskId: row.parent_project_id
+            });
+        });
+
+        return results
+
+        } catch (error) {
+            throw new Error('Failed to retrieve tasks with parent project ID');
+        }
+    }
+
+
     static async getResultWithId(id: number, order: string = "DESC"): Promise<Result> {
         try {
             const row = await this.getItemWithId(this.TABLE_NAME, id, order)
