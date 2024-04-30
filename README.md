@@ -1,5 +1,7 @@
 
 
+# project site
+https://junsaikogure.com/
 
 ## How to start
 ```
@@ -14,4 +16,16 @@ npm start
 ```
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
 nvm install v18.17.0
+```
+
+
+
+
+## SSL memo
+
+```
+sudo apt-get update
+sudo apt-get install python3-certbot-nginx
+
+sudo certbot --nginx
 ```
