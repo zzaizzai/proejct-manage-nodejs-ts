@@ -66,8 +66,8 @@
                     <div class="col-md-3">
                         <p class="task-date">Updated At: <%= task.displayUpdatedAt() %></p>
                     </div>
-
-
+                    <div><%= task.is_closed %></div>
+                    <button onclick="changeTaskCloseState(this)">Change State</button>
                     <button onclick="getAllTasksWithParentProjectId(this)">getTasksApi</button>
                 </div>
             </li>
@@ -83,6 +83,31 @@
 <script>console.log(test())</script>
 
 <script>
+
+function changeTaskCloseState(button) {
+    const taskId = button.closest('.task-item').dataset.taskId;
+
+    fetch(`/api/tasks/change_close_state`, {
+        method: 'post',
+        body: JSON.stringify({
+            taskId: taskId
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+        throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log(data.data);
+        return data.data
+    })
+    .catch(error => {
+        console.error('Error fetching tasks:', error);
+    });
+}
+
 function getAllTasksWithParentProjectId(button) {
 
     const taskId = button.closest('.task-item').dataset.taskId;
