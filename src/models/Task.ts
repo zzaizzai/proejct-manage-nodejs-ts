@@ -13,7 +13,7 @@ export class Task extends BasePost {
     dueDate: Date;
     parentProjectId: number;
 
-    static TABLE_NAME: string = 'tasks'
+    static readonly TABLE_NAME: string = 'tasks'
 
     constructor(
         { id = -1,

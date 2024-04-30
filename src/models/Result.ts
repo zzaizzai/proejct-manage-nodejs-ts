@@ -13,7 +13,7 @@ export class Result extends BasePost {
     parentTaskId: number;
 
 
-    static TABLE_NAME: string = 'results'
+    static readonly TABLE_NAME: string = 'results'
 
     constructor(
         { id = -1,

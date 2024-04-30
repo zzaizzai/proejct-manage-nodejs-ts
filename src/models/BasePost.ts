@@ -32,7 +32,7 @@ export abstract class BasePost implements BasePostData {
         this.is_closed = is_closed;
     }
 
-    static getCommonColumns(): string {
+    protected static getCommonColumns(): string {
         const sql: string = `
         id INTEGER PRIMARY KEY,
         name TEXT NOT NULL,
@@ -46,11 +46,11 @@ export abstract class BasePost implements BasePostData {
         return sql
     }
 
-    displayInfo(): BasePostData {
+    public displayInfo(): BasePostData {
         return { id: this.id, name: this.name, description: this.description, created_at: this.created_at, updated_at: this.updated_at, author: this.author, is_closed: this.is_closed }
     }
 
-    displayTime(): string {
+    public displayTime(): string {
         const created = this.displayCreatedAt()
         const updated = this.displayUpdatedAt()
 
@@ -60,18 +60,18 @@ export abstract class BasePost implements BasePostData {
         return created
     }
 
-    displayCreatedAt(): string {
-        return this._datetimeFormat(this.created_at);
+    public displayCreatedAt(): string {
+        return this.datetimeFormat(this.created_at);
     }
-    displayUpdatedAt(): string {
-        return this._datetimeFormat(this.updated_at);
+    public displayUpdatedAt(): string {
+        return this.datetimeFormat(this.updated_at);
     }
 
-    _datetimeFormat(datetime: Date): string {
+    protected datetimeFormat(datetime: Date): string {
         return moment(datetime).format('YY-MM-DD HH:mm:ss');
     }
 
-    static dropTable = async (tableName: string): Promise<void> => {
+    protected static dropTable = async (tableName: string): Promise<void> => {
         const sql = `DROP TABLE IF EXISTS  ${tableName};`;
         return new Promise<void>((resolve, reject) => {
             db.run(sql, (err) => {
@@ -85,7 +85,7 @@ export abstract class BasePost implements BasePostData {
         });
     };
 
-    static getItemWithId = async (tableName:string, id: number, order: string = 'DESC'): Promise<any> => {
+    protected static getItemWithId = async (tableName:string, id: number, order: string = 'DESC'): Promise<any> => {
         const sql = `SELECT * FROM ${tableName} where id = ${id} ORDER BY created_at ${order} ;`;
         return new Promise<any>((resolve, reject) => {
             db.all(sql, (err, rows) => {
@@ -98,7 +98,7 @@ export abstract class BasePost implements BasePostData {
         });
     }
 
-    static getAllItem = async (tableName: string, sort: string = 'DESC') => {
+    protected static getAllItem = async (tableName: string, sort: string = 'DESC') => {
         const sql = `SELECT * FROM ${tableName} ORDER BY id ${sort} ;`;
         return new Promise<any[]>((resolve, reject) => {
             db.all(sql, (err, rows) => {

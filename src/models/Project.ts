@@ -3,7 +3,7 @@ import { BasePost } from './BasePost'
 
 class Project extends BasePost {
 
-    static TABLE_NAME: string = 'projects'
+    static readonly TABLE_NAME: string = 'projects'
 
     static createProject = async (name: string = 'unknowon', description: string = 'no description', author: string = 'unknown'): Promise<void> => {
 
