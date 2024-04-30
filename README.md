@@ -27,5 +27,11 @@ nvm install v18.17.0
 sudo apt-get update
 sudo apt-get install python3-certbot-nginx
 
-sudo certbot --nginx --days 365
+sudo certbot --nginx
+```
+
+## SSL renew automation
+```
+sudo crontab -e
+0 0 * * * sudo certbot renew --renew-hook="sudo service nginx restart"
 ```
