@@ -6,19 +6,19 @@
 <h2>Project Detail Page</h2>
 <% items.forEach(item => { %>
 
-    <ul class="list-group task-list">
+    <ul class="list-group item-list">
         <li class="list-group-item">
             <div class="row">
                 <div class="col-md-8">
-                    <div class="task-details">
-                        <h3 class="task-name"><%= item.name %></h3>
-                        <p class="task-description"><%= item.description %></p>
-                        <p class="task-author">Author: <%= item.author %></p>
+                    <div class="item-details">
+                        <h3 class="item-name"><%= item.name %></h3>
+                        <p class="item-description"><%= item.description %></p>
+                        <p class="item-author">Author: <%= item.author %></p>
                     </div>
                 </div>
                 <div class="col-md-2">
-                    <p class="task-date">Created At: <%= item.displayCreatedAt() %></p>
-                    <p class="task-date">Updated At: <%= item.displayUpdatedAt() %></p>
+                    <p class="item-date">Created At: <%= item.displayCreatedAt() %></p>
+                    <p class="item-date">Updated At: <%= item.displayUpdatedAt() %></p>
                 </div>
             </div>
         </li>
@@ -47,32 +47,31 @@
 </form>
 
 <br>
-
 <ul class="list-group task-list">
-        <% childItems.forEach(task => { %>
-            <li class="list-group-item task-item" data-task-id="<%= task.id %>"  data-state-closed="<%= task.is_closed %>">
-                <div class="task-id" data-task-id="<%= task.id %>"></div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="task-details">
-                            <h3 class="task-name"><%= task.name %></h3>
-                            <p class="task-description"><%= task.description %></p>
-                            <p class="task-author">Author: <%= task.author %></p>
-                        </div>
+    <% childItems.forEach(task => { %>
+        <li class="list-group-item task-item" data-task-id="<%= task.id %>"  data-state-closed="<%= task.is_closed %>">
+            <div class="task-id" data-task-id="<%= task.id %>"></div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="task-details">
+                        <h3 class="task-name"><%= task.name %></h3>
+                        <p class="task-description"><%= task.description %></p>
+                        <p class="task-author">Author: <%= task.author %></p>
                     </div>
-                    <div class="col-md-3">
-                        <p class="task-date">Created At: <%= task.displayCreatedAt() %></p>
-                    </div>
-                    <div class="col-md-3">
-                        <p class="task-date">Updated At: <%= task.displayUpdatedAt() %></p>
-                    </div>
-                    <div><%= task.is_closed %></div>
-                    <button onclick="changeTaskCloseStateApi(this)">Change State</button>
-                    <button onclick="getAllTasksWithParentProjectIdApi(this)">getTasksApi</button>
                 </div>
-            </li>
-        <% }); %>
-    </ul>
+                <div class="col-md-3">
+                    <p class="task-date">Created At: <%= task.displayCreatedAt() %></p>
+                </div>
+                <div class="col-md-3">
+                    <p class="task-date">Updated At: <%= task.displayUpdatedAt() %></p>
+                </div>
+                <div><%= task.is_closed %></div>
+                <button class="btn btn-outline-primary" onclick="changeTaskCloseStateApi(this)">Change State</button>
+                <button class="btn btn-outline-success" onclick="getAllTasksWithParentProjectIdApi(this)">Show Results</button>
+            </div>
+        </li>
+    <% }); %>
+</ul>
 
 
 <br>
@@ -80,54 +79,10 @@
 <br>
 
 <script type="text/javascript" src="/js/common.js"></script>
-<script>console.log(test())</script>
+<script type="text/javascript" src="/js/detail_api.js"></script>
 
 <script>
 
-function changeTaskCloseStateApi(button) {
-    const taskId = button.closest('.task-item').dataset.taskId;
-    const stateClosed = button.closest('.task-item').dataset.stateClosed
-    fetch(`/api/tasks/change_close_state`, {
-        method: 'post',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            taskId: taskId,
-            stateClosed: stateClosed
-        })
-    })
-    .then(response => {
-        if (!response.ok) {
-        throw new Error('Network response was not ok');
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log(data.data);
-    })
-    .catch(error => {
-        console.error('Error fetching tasks:', error);
-    });
-}
-
-function getAllTasksWithParentProjectIdApi(button) {
-
-    const taskId = button.closest('.task-item').dataset.taskId;
-    fetch(`/api/get_all_results_with_parent_task_id?parent_project_id=${taskId}`)
-    .then(response => {
-        if (!response.ok) {
-        throw new Error('Network response was not ok');
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log(data.tasks);
-    })
-    .catch(error => {
-        console.error('Error fetching tasks:', error);
-    });
-}
 </script>
 
 <%- include("../footer") %>
