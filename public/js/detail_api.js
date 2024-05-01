@@ -1,27 +1,29 @@
-
 async function changeTaskCloseStateApi(taskId, stateClosed) {
-    fetch(`/api/tasks/change_close_state`, {
-        method: 'post',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            taskId: taskId,
-            stateClosed: stateClosed
+    return new Promise((resolve, reject) => {
+        fetch(`/api/tasks/change_close_state`, {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                taskId: taskId,
+                stateClosed: stateClosed
+            })
         })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            resolve(data.data)
+        })
+        .catch(error => {
+            console.error('Error fetching tasks:', error);
+            reject(error)
+        });
     })
-    .then(response => {
-        if (!response.ok) {
-        throw new Error('Network response was not ok');
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log(data.data);
-    })
-    .catch(error => {
-        console.error('Error fetching tasks:', error);
-    });
 }
 function getAllTasksWithParentProjectIdApi(taskId) {
     return new Promise((resolve, reject) => {

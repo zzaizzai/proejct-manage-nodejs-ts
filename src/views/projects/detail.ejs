@@ -7,14 +7,14 @@
     <ul class="list-group item-list">
         <li class="list-group-item">
             <div class="row">
-                <div class="col-md-8">
+                <div class="col">
                     <div class="item-details">
                         <h3 class="item-name"><%= item.name %></h3>
                         <p class="item-description"><%= item.description %></p>
                         <p class="item-author">Author: <%= item.author %></p>
                     </div>
                 </div>
-                <div class="col-md-2">
+                <div class="col-3">
                     <p class="item-date">Created At: <%= item.displayCreatedAt() %></p>
                     <p class="item-date">Updated At: <%= item.displayUpdatedAt() %></p>
                 </div>
@@ -45,14 +45,22 @@
 </form>
 
 <br>
+
+<style>
+
+    .task-item-closed .task-name{
+        text-decoration: line-through;
+
+    }
+</style>
+
 <ul class="list-group task-list">
     <% childItems.forEach(task => { %>
-        <li class="list-group-item task-item">
+        <li class="list-group-item task-item <%= task.is_closed ? "task-item-closed" : "" %> ">
             <div class="row">
                 <div class="col-md-7">
                     <div class="task-details">
                         <h3 class="task-name"><%= task.name %></h3>
-                        <p class="task-description"><%= task.description %></p>
                         <p class="task-author">Author: <%= task.author %></p>
                     </div>
                 </div>
@@ -61,7 +69,7 @@
                     <p class="task-date">Updated At: <%= task.displayUpdatedAt() %></p>
                 </div>
                 <div class="show-value-is-closed"><%= task.is_closed %></div>
-                <button class="btn btn-outline-primary" onclick="changeTaskClosedState(this, <%= task.id %>, <%= task.is_closed %>)">Change State</button>
+                <button class="btn btn-outline-primary" onclick="changeTaskClosedState(this, <%= task.id %>)">Change State</button>
                 <button class="btn btn-outline-success" onclick="getAllTasksWithParentProject(this, <%= task.id %>)">Show Results</button>
             </div>
         </li>
@@ -77,20 +85,29 @@
 <script type="text/javascript" src="/js/detail_api.js"></script>
 
 <script>
-async function changeTaskClosedState(button, taskId, stateClosed) {
+async function changeTaskClosedState(button, taskId) {
     const closedText = "1"
     const notClosedText = "0"
-    try {
-        await changeTaskCloseStateApi(taskId, stateClosed) ;
-        const showValue = button.parentNode.querySelector('.show-value-is-closed');
 
-        if (showValue.textContent === closedText) {
-            showValue.textContent = notClosedText
+    try {
+
+        const taskItem = button.closest('.task-item')
+        const showValue = taskItem.querySelector('.show-value-is-closed');
+        const currentStateClosed = String(showValue.textContent)
+        console.log()
+
+        await changeTaskCloseStateApi(taskId, currentStateClosed) ;
+
+        if (currentStateClosed=== notClosedText) {
+            taskItem.classList.add("task-item-closed");
+            showValue.textContent  = closedText;
         } else {
-            showValue.textContent = closedText
+            taskItem.classList.remove("task-item-closed");
+            showValue.textContent  = notClosedText;
         }
+
     } catch (err) {
-        console.err(err)
+        console.error(err)
     }
 };
 
