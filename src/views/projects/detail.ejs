@@ -49,10 +49,9 @@
 <br>
 <ul class="list-group task-list">
     <% childItems.forEach(task => { %>
-        <li class="list-group-item task-item" data-task-id="<%= task.id %>"  data-state-closed="<%= task.is_closed %>">
-            <div class="task-id" data-task-id="<%= task.id %>"></div>
+        <li class="list-group-item task-item">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-7">
                     <div class="task-details">
                         <h3 class="task-name"><%= task.name %></h3>
                         <p class="task-description"><%= task.description %></p>
@@ -61,13 +60,11 @@
                 </div>
                 <div class="col-md-3">
                     <p class="task-date">Created At: <%= task.displayCreatedAt() %></p>
-                </div>
-                <div class="col-md-3">
                     <p class="task-date">Updated At: <%= task.displayUpdatedAt() %></p>
                 </div>
-                <div><%= task.is_closed %></div>
-                <button class="btn btn-outline-primary" onclick="changeTaskCloseStateApi(this)">Change State</button>
-                <button class="btn btn-outline-success" onclick="getAllTasksWithParentProjectIdApi(this)">Show Results</button>
+                <div class="show-value-is-closed"><%= task.is_closed %></div>
+                <button class="btn btn-outline-primary" onclick="changeTaskClosedState(this, <%= task.id %>, <%= task.is_closed %>)">Change State</button>
+                <button class="btn btn-outline-success" onclick="getAllTasksWithParentProject(this, <%= task.id %>)">Show Results</button>
             </div>
         </li>
     <% }); %>
@@ -82,6 +79,26 @@
 <script type="text/javascript" src="/js/detail_api.js"></script>
 
 <script>
+async function changeTaskClosedState(button, taskId, stateClosed) {
+    const closedText = "1"
+    const notClosedText = "0"
+    try {
+        await changeTaskCloseStateApi(taskId, stateClosed) ;
+        const showValue = button.parentNode.querySelector('.show-value-is-closed');
+
+        if (showValue.textContent === closedText) {
+            showValue.textContent = notClosedText
+        } else {
+            showValue.textContent = closedText
+        }
+   } catch (err) {
+        console.err(err)
+   }
+};
+
+async function getAllTasksWithParentProject(button, taskId) {
+    await getAllTasksWithParentProjectIdApi(button, taskId)
+}
 
 </script>
 

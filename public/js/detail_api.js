@@ -1,7 +1,5 @@
 
-function changeTaskCloseStateApi(button) {
-    const taskId = button.closest('.task-item').dataset.taskId;
-    const stateClosed = button.closest('.task-item').dataset.stateClosed
+async function changeTaskCloseStateApi(taskId, stateClosed) {
     fetch(`/api/tasks/change_close_state`, {
         method: 'post',
         headers: {
@@ -20,16 +18,14 @@ function changeTaskCloseStateApi(button) {
     })
     .then(data => {
         console.log(data.data);
-        window.location.reload()
     })
     .catch(error => {
         console.error('Error fetching tasks:', error);
     });
 }
 
-function getAllTasksWithParentProjectIdApi(button) {
+async function getAllTasksWithParentProjectIdApi(button, taskId) {
 
-    const taskId = button.closest('.task-item').dataset.taskId;
     const taskListOfResult = button.closest('.task-item').querySelector('.list-group-item');
 
     // hide if show already

@@ -166,9 +166,9 @@ export class Task extends BasePost {
         return tasks
     };
 
-    static async getTasksWithParentProjectId(parentProjectId: number, order: string = "DESC"): Promise<Task[]> {
+    static async getTasksWithParentProjectId(parentProjectId: number, sort: string = "DESC"): Promise<Task[]> {
         try {
-            const sql = `SELECT * FROM ${this.TABLE_NAME} WHERE parent_project_id = ? ORDER BY created_at ${order} ;`;
+            const sql = `SELECT * FROM ${this.TABLE_NAME} WHERE parent_project_id = ? ORDER BY id ${sort} ;`;
             const rows = await new Promise<any[]>((resolve, reject) => {
                 db.all(sql, [parentProjectId], (err, rows) => {
                     if (err) {

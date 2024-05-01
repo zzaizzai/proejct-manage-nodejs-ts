@@ -74,8 +74,8 @@ export class Result extends BasePost {
         try {
             await this.dropResultTable()
             await this.createTable()
-            await this.createResult({ name: 'testresult', description: 'task 1 done', author: "test user1" , parentProjectId: 1, parentTaskId: 1 })
-            await this.createResult({ name: 'testresult', description: 'task 2 done', author: "test user2", parentProjectId: 1, parentTaskId: 2 })
+            await this.createResult({ name: 'testresult1', description: 'task 1 done', author: "test user1" , parentProjectId: 1, parentTaskId: 1 })
+            await this.createResult({ name: 'testresult2', description: 'task 2 done', author: "test user2", parentProjectId: 1, parentTaskId: 2 })
         } catch (error) {
             console.log(error)
             throw new Error('Failed to reset projects table');

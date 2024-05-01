@@ -63,6 +63,7 @@ router.get('/detail', async (req, res) => {
 
         const projects = await Project.getProjectsWithId(idNumber);
         const tasks = await Task.getTasksWithParentProjectId(idNumber)
+        console.log(tasks)
 
         if (!projects.length) {
             return res.redirect('/projects/list')
