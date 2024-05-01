@@ -4,7 +4,6 @@
 
 <h2>Project Detail Page</h2>
 <% items.forEach(item => { %>
-
     <ul class="list-group item-list">
         <li class="list-group-item">
             <div class="row">
@@ -39,7 +38,7 @@
 </style>
 
 <form action="/tasks/add" method="post" class="col">
-        <input name="project_id" type="hidden" value="<%= projectInformation.id %>">
+        <input name="project_id" type="hidden" value="<%= items[0].getId() %>">
         <input placeholder="Title" class="form-control task-input-width my-1" name="name" type="text" >
         <textarea rows="3" placeholder="Description" class="form-control task-input-width my-1" name="description"></textarea>
         <button class="btn btn-primary" type="submit">Add Task</button>
@@ -90,9 +89,9 @@ async function changeTaskClosedState(button, taskId, stateClosed) {
         } else {
             showValue.textContent = closedText
         }
-   } catch (err) {
+    } catch (err) {
         console.err(err)
-   }
+    }
 };
 
 async function getAllTasksWithParentProject(button, taskId) {

@@ -82,9 +82,10 @@ router.get('/detail', async (req, res) => {
 
         const task = await Task.getTaskWithId(idNumber);
 
-        const project = await Project.getProjectWithId(task.getParentProjectId() ?? 1)
+        const project_id = task.getParentProjectId() ?? -1
+        const project = await Project.getProjectWithId(project_id)
 
-        res.render('tasks/detail', { projectInformation: {id: project.getId() } , item: task, parentItem: project });
+        res.render('tasks/detail', { item: task, parentItem: project });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Failed to retrieve projects' });

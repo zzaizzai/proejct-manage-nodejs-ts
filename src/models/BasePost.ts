@@ -12,17 +12,36 @@ export abstract class BasePost {
     private is_closed: boolean;
     private due_date: Date | undefined;
 
-    constructor({ id = -1, name, description, created_at = new Date(), updated_at = new Date(), author = 'unknown', is_closed = false, due_date = undefined }:
-        { id?: number, name: string, description: string, created_at?: Date, updated_at?: Date, author?: string, is_closed: boolean, due_date?: Date }) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.created_at = created_at;
-        this.updated_at = updated_at;
-        this.author = author;
-        this.is_closed = is_closed;
-        this.due_date = due_date
-    }
+    constructor(
+        { 
+            id = -1, 
+            name, description, 
+            created_at = new Date(), 
+            updated_at = new Date(), 
+            author = 'unknown', 
+            is_closed = false, 
+            due_date = undefined 
+        }:
+        { 
+            id?: number, 
+            name: string, 
+            description: string, 
+            created_at?: Date, 
+            updated_at?: Date, 
+            author?: string, 
+            is_closed: boolean, 
+            due_date?: Date 
+        }) 
+        {
+            this.id = id;
+            this.name = name;
+            this.description = description;
+            this.created_at = created_at;
+            this.updated_at = updated_at;
+            this.author = author;
+            this.is_closed = is_closed;
+            this.due_date = due_date
+        }
 
     public getId(): number {return this.id}
     public getIsClosed(): boolean {return this.is_closed}

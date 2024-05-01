@@ -4,12 +4,13 @@ import { BasePost } from './BasePost'
 
 export class Task extends BasePost {
 
-    private parent_project_id: number;
+    private parent_project_id?: number;
 
     static readonly TABLE_NAME: string = 'tasks'
 
     constructor(
-        { id = -1,
+        { 
+            id = -1,
             name,
             description,
             created_at = new Date(),
@@ -17,7 +18,7 @@ export class Task extends BasePost {
             author = 'unknown',
             is_closed = false,
             due_date = new Date(),
-            parent_project_id
+            parent_project_id = undefined
         }:
         {
             id?: number,
@@ -28,7 +29,7 @@ export class Task extends BasePost {
             author?: string,
             is_closed: boolean,
             due_date?: Date,
-            parent_project_id: number;
+            parent_project_id?: number;
         }) {
         super({ id, name, description, created_at, updated_at, author, is_closed, due_date });
         this.parent_project_id = parent_project_id
@@ -38,7 +39,7 @@ export class Task extends BasePost {
         return { ...super.displayInfo(), parent_project_id: this.parent_project_id };
     }
 
-    public getParentProjectId(): number { return this.parent_project_id}
+    public getParentProjectId(): number | undefined { return this.parent_project_id}
 
     static createTask = async (
         { name = 'unknowon', description = 'no description', author = 'unknown', parentProjectId }:
