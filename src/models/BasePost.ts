@@ -9,10 +9,11 @@ export abstract class BasePost {
     private created_at: Date;
     private updated_at: Date;
     private author: string;
-    private is_closed: boolean
+    private is_closed: boolean;
+    private due_date: Date | undefined;
 
-    constructor({ id = -1, name, description, created_at = new Date(), updated_at = new Date(), author = 'unknown', is_closed = false }:
-        { id?: number, name: string, description: string, created_at?: Date, updated_at?: Date, author?: string, is_closed: boolean }) {
+    constructor({ id = -1, name, description, created_at = new Date(), updated_at = new Date(), author = 'unknown', is_closed = false, due_date = undefined }:
+        { id?: number, name: string, description: string, created_at?: Date, updated_at?: Date, author?: string, is_closed: boolean, due_date?: Date }) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -20,6 +21,7 @@ export abstract class BasePost {
         this.updated_at = updated_at;
         this.author = author;
         this.is_closed = is_closed;
+        this.due_date = due_date
     }
 
     public getId(): number {return this.id}

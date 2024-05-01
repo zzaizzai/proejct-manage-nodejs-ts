@@ -4,8 +4,8 @@ import { BasePost } from './BasePost'
 
 export class Result extends BasePost {
 
-    parentProjectId: number;
-    parentTaskId: number;
+    parent_project_id: number;
+    parent_task_id: number;
 
 
     static readonly TABLE_NAME: string = 'results'
@@ -18,8 +18,8 @@ export class Result extends BasePost {
             updated_at = new Date(),
             author = 'unknown',
             is_closed = false,
-            parentProjectId,
-            parentTaskId
+            parent_project_id,
+            parent_task_id
         }:
         {
             id?: number,
@@ -30,17 +30,17 @@ export class Result extends BasePost {
             author?: string,
             is_closed: boolean,
             duedate?: Date,
-            parentProjectId: number,
-            parentTaskId: number
+            parent_project_id: number,
+            parent_task_id: number
         }) {
         super({ id, name, description, created_at, updated_at, author, is_closed });
-        this.parentProjectId = parentProjectId
-        this.parentTaskId = parentTaskId
+        this.parent_project_id = parent_project_id
+        this.parent_task_id = parent_task_id
     }
 
 
     displayInfo() {
-        return { ...super.displayInfo(), parentProjectId: this.parentProjectId , parentTaskId: this.parentProjectId};
+        return { ...super.displayInfo(), parentProjectId: this.parent_project_id , parentTaskId: this.parent_project_id};
     }
 
     static createResult = async (
@@ -112,8 +112,8 @@ export class Result extends BasePost {
                 updated_at: row.updated_at,
                 author: row.author,
                 is_closed: row.is_closed,
-                parentProjectId: row.parent_project_id,
-                parentTaskId: row.parent_project_id
+                parent_project_id: row.parent_project_id,
+                parent_task_id: row.parent_project_id
             });
         });
 
@@ -146,8 +146,8 @@ export class Result extends BasePost {
                 updated_at: row.updated_at,
                 author: row.author,
                 is_closed: row.is_closed,
-                parentProjectId: row.parent_project_id,
-                parentTaskId: row.parent_project_id
+                parent_project_id: row.parent_project_id,
+                parent_task_id: row.parent_project_id
             });
         });
 
@@ -175,8 +175,8 @@ export class Result extends BasePost {
                     updated_at: row.updated_at,
                     author: row.author,
                     is_closed: row.is_closed,
-                    parentProjectId: row.parent_project_id,
-                    parentTaskId: row.parent_task_id
+                    parent_project_id: row.parent_project_id,
+                    parent_task_id: row.parent_task_id
             });
 
             return tasks;

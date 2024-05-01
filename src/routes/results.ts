@@ -1,7 +1,6 @@
 // porjects.ts
 import express from 'express';
 import Result from '../models/Result';
-import Task from '../models/Task'
 import Project from '../models/Project'
 
 const router = express.Router();
@@ -65,7 +64,7 @@ router.get('/detail', async (req, res) => {
     try {
 
         const result = await Result.getResultWithId(idNumber);
-        const project = await Project.getProjectWithId(result.parentProjectId)
+        const project = await Project.getProjectWithId(result.parent_project_id)
 
         res.render('results/detail', { projectInformation: {id: project.getId() } , item: result, parentItem: project });
         

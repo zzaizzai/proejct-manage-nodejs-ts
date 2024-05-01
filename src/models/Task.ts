@@ -4,8 +4,7 @@ import { BasePost } from './BasePost'
 
 export class Task extends BasePost {
 
-    dueDate: Date;
-    parentProjectId: number;
+    private parent_project_id: number;
 
     static readonly TABLE_NAME: string = 'tasks'
 
@@ -17,8 +16,8 @@ export class Task extends BasePost {
             updated_at = new Date(),
             author = 'unknown',
             is_closed = false,
-            duedate = new Date(),
-            parentProjectId
+            due_date = new Date(),
+            parent_project_id
         }:
         {
             id?: number,
@@ -28,17 +27,18 @@ export class Task extends BasePost {
             updated_at?: Date,
             author?: string,
             is_closed: boolean,
-            duedate?: Date,
-            parentProjectId: number;
+            due_date?: Date,
+            parent_project_id: number;
         }) {
-        super({ id, name, description, created_at, updated_at, author, is_closed });
-        this.dueDate = duedate;
-        this.parentProjectId = parentProjectId
+        super({ id, name, description, created_at, updated_at, author, is_closed, due_date });
+        this.parent_project_id = parent_project_id
     }
 
     displayInfo() {
-        return { ...super.displayInfo(), dueDate: this.dueDate };
+        return { ...super.displayInfo(), parent_project_id: this.parent_project_id };
     }
+
+    public getParentProjectId(): number { return this.parent_project_id}
 
     static createTask = async (
         { name = 'unknowon', description = 'no description', author = 'unknown', parentProjectId }:
@@ -62,7 +62,7 @@ export class Task extends BasePost {
         return this.dropTable(this.TABLE_NAME);
     }
 
-    static resetTable = async () => {
+    static async resetTable(): Promise<void> {
         try {
             await this.dropTaskTable()
             await this.createTable()
@@ -114,7 +114,7 @@ export class Task extends BasePost {
                 updated_at: row.updated_at,
                 author: row.author,
                 is_closed: row.is_closed,
-                parentProjectId: row.parent_project_id
+                parent_project_id: row.parent_project_id
         });
 
         return project
@@ -153,7 +153,7 @@ export class Task extends BasePost {
                 updated_at: row.updated_at,
                 author: row.author,
                 is_closed: row.is_closed,
-                parentProjectId: row.parent_project_id
+                parent_project_id: row.parent_project_id
             });
         });
 
@@ -182,7 +182,7 @@ export class Task extends BasePost {
                     updated_at: row.updated_at,
                     author: row.author,
                     is_closed: row.is_closed,
-                    parentProjectId: row.parent_project_id
+                    parent_project_id: row.parent_project_id
                 });
             });
 

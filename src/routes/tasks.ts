@@ -82,7 +82,7 @@ router.get('/detail', async (req, res) => {
 
         const task = await Task.getTaskWithId(idNumber);
 
-        const project = await Project.getProjectWithId(task.parentProjectId ?? 1)
+        const project = await Project.getProjectWithId(task.getParentProjectId() ?? 1)
 
         res.render('tasks/detail', { projectInformation: {id: project.getId() } , item: task, parentItem: project });
     } catch (error) {
