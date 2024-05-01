@@ -3,13 +3,13 @@ import moment from 'moment';
 
 
 export abstract class BasePost {
-    protected id: number;
-    protected name: string;
-    protected description: string;
-    protected created_at: Date;
-    protected updated_at: Date;
-    protected author: string;
-    protected is_closed: boolean
+    private id: number;
+    private name: string;
+    private description: string;
+    private created_at: Date;
+    private updated_at: Date;
+    private author: string;
+    private is_closed: boolean
 
     constructor({ id = -1, name, description, created_at = new Date(), updated_at = new Date(), author = 'unknown', is_closed = false }:
         { id?: number, name: string, description: string, created_at?: Date, updated_at?: Date, author?: string, is_closed: boolean }) {
@@ -22,13 +22,8 @@ export abstract class BasePost {
         this.is_closed = is_closed;
     }
 
-    public getId(): number {
-        return this.id
-    }
-
-    public getIsClosed(): boolean {
-        return this.is_closed
-    }
+    public getId(): number {return this.id}
+    public getIsClosed(): boolean {return this.is_closed}
 
     protected static getCommonColumns(): string {
         const sql: string = `
@@ -45,7 +40,13 @@ export abstract class BasePost {
     }
 
     public displayInfo() {
-        return { id: this.id, name: this.name, description: this.description, created_at: this.created_at, updated_at: this.updated_at, author: this.author, is_closed: this.is_closed }
+        const info: any = {};
+        for (const key in this) {
+            if (Object.prototype.hasOwnProperty.call(this, key)) {
+                info[key] = this[key];
+            }
+        }
+        return info;
     }
 
     public displayTime(): string {

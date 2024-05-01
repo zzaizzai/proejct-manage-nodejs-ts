@@ -26,7 +26,7 @@ async function changeTaskCloseStateApi(taskId, stateClosed) {
 function getAllTasksWithParentProjectIdApi(taskId) {
     return new Promise((resolve, reject) => {
 
-        fetch(`/api/get_all_results_with_parent_task_id?parent_project_id=${taskId}`)
+        fetch(`/api/get_all_results_with_parent_task_id?parent_task_id=${taskId}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');

@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.get('/test', async (req, res) => {
     await sleep(2000);
-    res.send({test: "test"})
+    return res.send({test: "test"})
 })
 
 router.get('/reset_all_tables', async (req, res) => {
@@ -16,7 +16,7 @@ router.get('/reset_all_tables', async (req, res) => {
     await Project.resetTable();
     await Task.resetTable();
     await Result.resetTable();
-    res.status(200).send({message: 'Succeed Reset Tables'});
+    return res.status(200).send({message: 'Succeed Reset Tables'});
 })
 
 
@@ -24,20 +24,18 @@ router.get('/reset_all_tables', async (req, res) => {
 router.get('/get_all_tasks_with_parent_project_id', async (req, res) => {
 
     const parentProjectId = parseInt(req.query.parent_project_id as string);
-
     const tasks = await Task.getTasksWithParentProjectId(parentProjectId)
 
-    res.status(200).send({tasks: tasks})
+    return res.status(200).send({tasks: tasks})
 })
 
 
 router.get('/get_all_results_with_parent_task_id', async (req, res) => {
 
-    const parentResultId = parseInt(req.query.parent_project_id as string);
+    const parentTaskId = parseInt(req.query.parent_task_id as string);
+    const tasks = await Result.getAllResultsWithParentTaskId(parentTaskId)
 
-    const tasks = await Result.getAllResultsWithParentTaskId(parentResultId)
-
-    res.status(200).send({tasks: tasks})
+    return res.status(200).send({tasks: tasks})
 })
 
 router.post('/tasks/change_close_state', async (req, res) => {
