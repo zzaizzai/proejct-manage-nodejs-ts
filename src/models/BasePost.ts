@@ -3,13 +3,13 @@ import moment from 'moment';
 
 
 export abstract class BasePost {
-    id: number;
-    name: string;
-    description: string;
-    created_at: Date;
-    updated_at: Date;
-    author: string;
-    is_closed: boolean
+    protected id: number;
+    protected name: string;
+    protected description: string;
+    protected created_at: Date;
+    protected updated_at: Date;
+    protected author: string;
+    protected is_closed: boolean
 
     constructor({ id = -1, name, description, created_at = new Date(), updated_at = new Date(), author = 'unknown', is_closed = false }:
         { id?: number, name: string, description: string, created_at?: Date, updated_at?: Date, author?: string, is_closed: boolean }) {
@@ -20,6 +20,14 @@ export abstract class BasePost {
         this.updated_at = updated_at;
         this.author = author;
         this.is_closed = is_closed;
+    }
+
+    public getId(): number {
+        return this.id
+    }
+
+    public getIsClosed(): boolean {
+        return this.is_closed
     }
 
     protected static getCommonColumns(): string {
@@ -100,7 +108,6 @@ export abstract class BasePost {
             });
         });
     };
-
 
 
     public async setIsClosed(tableName: string, changeToState: boolean): Promise<void> {

@@ -194,7 +194,7 @@ export class Task extends BasePost {
 
 
     public async setIsClosed(): Promise<void> {
-        if (this.is_closed) {
+        if (this.getIsClosed()) {
             return super.setIsClosed(Task.TABLE_NAME, false)
         }
         return super.setIsClosed(Task.TABLE_NAME, true)

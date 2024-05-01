@@ -67,7 +67,7 @@ router.get('/detail', async (req, res) => {
         const result = await Result.getResultWithId(idNumber);
         const project = await Project.getProjectWithId(result.parentProjectId)
 
-        res.render('results/detail', { projectInformation: {id: project.id } , item: result, parentItem: project });
+        res.render('results/detail', { projectInformation: {id: project.getId() } , item: result, parentItem: project });
         
     } catch (error) {
         console.error(error);
