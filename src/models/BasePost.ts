@@ -86,7 +86,7 @@ export abstract class BasePost implements BasePostData {
     };
 
     protected static getItemWithId = async (tableName:string, id: number, order: string = 'DESC'): Promise<any> => {
-        const sql = `SELECT * FROM ${tableName} where id = ${id} ORDER BY created_at ${order} ;`;
+        const sql = `SELECT * FROM ${tableName} where id = ${id} ORDER BY id ${order} ;`;
         return new Promise<any>((resolve, reject) => {
             db.all(sql, (err, rows) => {
                 if (err) {
@@ -115,7 +115,6 @@ export abstract class BasePost implements BasePostData {
 
     public async setIsClosed(tableName: string, changeToState: boolean): Promise<void> {
 
-        const item = await BasePost.getItemWithId(tableName, this.id)
         const updateSql = `UPDATE ${tableName} SET is_closed = ${changeToState} WHERE id = ${this.id};`;
 
         return new Promise<void>((resolve, reject) => {

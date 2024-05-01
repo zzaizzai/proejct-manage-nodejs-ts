@@ -76,6 +76,8 @@ export class Result extends BasePost {
             await this.createTable()
             await this.createResult({ name: 'testresult1', description: 'task 1 done', author: "test user1" , parentProjectId: 1, parentTaskId: 1 })
             await this.createResult({ name: 'testresult2', description: 'task 2 done', author: "test user2", parentProjectId: 1, parentTaskId: 2 })
+            await this.createResult({ name: 'testresult3', description: 'task 3 done', author: "test user3", parentProjectId: 1, parentTaskId: 2 })
+
         } catch (error) {
             console.log(error)
             throw new Error('Failed to reset projects table');
@@ -128,7 +130,7 @@ export class Result extends BasePost {
     static getAllResultsWithParentTaskId = async (parentTaskId: number, order: string = 'DESC'): Promise<Result[]> => {
 
         try {
-            const sql = `SELECT * FROM ${this.TABLE_NAME} WHERE parent_task_id = ? ORDER BY created_at ${order} ;`;
+            const sql = `SELECT * FROM ${this.TABLE_NAME} WHERE parent_task_id = ? ORDER BY id ${order} ;`;
             const rows = await new Promise<any[]>((resolve, reject) => {
                 db.all(sql, [parentTaskId], (err, rows) => {
                     if (err) {

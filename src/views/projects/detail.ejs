@@ -97,7 +97,36 @@ async function changeTaskClosedState(button, taskId, stateClosed) {
 };
 
 async function getAllTasksWithParentProject(button, taskId) {
-    await getAllTasksWithParentProjectIdApi(button, taskId)
+
+    // remove already exist items
+    const taskListOfResult = button.closest('.task-item').querySelectorAll('.list-group-item'); // : Node[]
+
+    if (taskListOfResult.length > 0) {
+        taskListOfResult.forEach(item => {
+            item.remove()
+        })
+        return
+    }
+
+    const tasks = await getAllTasksWithParentProjectIdApi(taskId)
+
+    // no item
+    if (!tasks.length) {
+        const noItem = document.createElement('li');
+        noItem.classList.add('list-group-item');
+        noItem.textContent = "no item"
+
+        button.closest('.task-item').appendChild(noItem);
+    }
+
+    // default
+    tasks.forEach(task => {
+        const listItem = document.createElement('li');
+        listItem.classList.add('list-group-item');
+        listItem.textContent = task.name;
+
+        button.closest('.task-item').appendChild(listItem);
+    });
 }
 
 </script>
