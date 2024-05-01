@@ -1,11 +1,5 @@
 import { db } from '../db'
 import { BasePost } from './BasePost'
-import { BasePostData } from './BasePost'
-
-export interface TaskData extends BasePostData {
-    dueDate: Date;
-    parentProjectId?: number;
-}
 
 
 export class Task extends BasePost {
@@ -42,7 +36,7 @@ export class Task extends BasePost {
         this.parentProjectId = parentProjectId
     }
 
-    displayInfo(): TaskData {
+    displayInfo() {
         return { ...super.displayInfo(), dueDate: this.dueDate };
     }
 

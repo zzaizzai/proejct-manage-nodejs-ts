@@ -2,17 +2,7 @@ import { db } from '../db'
 import moment from 'moment';
 
 
-export interface BasePostData {
-    id: number;
-    name: string;
-    description: string;
-    created_at: Date;
-    updated_at: Date;
-    author: string;
-    is_closed: boolean;
-}
-
-export abstract class BasePost implements BasePostData {
+export abstract class BasePost {
     id: number;
     name: string;
     description: string;
@@ -46,7 +36,7 @@ export abstract class BasePost implements BasePostData {
         return sql
     }
 
-    public displayInfo(): BasePostData {
+    public displayInfo() {
         return { id: this.id, name: this.name, description: this.description, created_at: this.created_at, updated_at: this.updated_at, author: this.author, is_closed: this.is_closed }
     }
 

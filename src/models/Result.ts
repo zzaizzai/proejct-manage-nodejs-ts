@@ -1,11 +1,6 @@
 import { db } from '../db'
 import { BasePost } from './BasePost'
-import { BasePostData } from './BasePost'
 
-export interface ResultData extends BasePostData {
-    parentProjectId: number;
-    parentTaskId: number;
-}
 
 export class Result extends BasePost {
 
@@ -44,7 +39,7 @@ export class Result extends BasePost {
     }
 
 
-    displayInfo(): ResultData {
+    displayInfo() {
         return { ...super.displayInfo(), parentProjectId: this.parentProjectId , parentTaskId: this.parentProjectId};
     }
 
