@@ -6,6 +6,20 @@ import { sleep }  from '../utils/func_times'
 
 const router = express.Router();
 
+router.post('/test', async (req, res) => {
+    const mode = req.query.mode ?? "success"
+    const timerStr = req.query.timer as string ?? "1000"
+    const timerInt = parseInt(timerStr)
+
+    await sleep(timerInt);
+
+    if (mode == "success") {
+        return res.status(200).send({result: "done"})
+    } else {
+        return res.status(500).send("fail")
+    }
+})
+
 router.get('/test', async (req, res) => {
     await sleep(2000);
     return res.send({test: "test"})
