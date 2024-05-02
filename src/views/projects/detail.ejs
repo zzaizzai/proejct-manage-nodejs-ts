@@ -68,9 +68,11 @@
                     <p class="task-date">Created At: <%= task.displayCreatedAt() %></p>
                     <p class="task-date">Updated At: <%= task.displayUpdatedAt() %></p>
                 </div>
-                <div class="show-value-is-closed"><%= task.is_closed %></div>
-                <button class="btn btn-outline-primary" onclick="changeTaskClosedState(this, <%= task.id %>)">Change State</button>
-                <button class="btn btn-outline-success" onclick="getAllTasksWithParentProject(this, <%= task.id %>)">Show Results</button>
+                <div hidden class="show-value-is-closed"><%= task.is_closed %></div>
+                <div class="row">
+                    <button class="btn btn-outline-primary" onclick="changeTaskClosedState(this, <%= task.id %>)">Change State</button>
+                    <button class="btn btn-outline-success" onclick="getAllTasksWithParentProject(this, <%= task.id %>)">Show Results</button>
+                </div>
             </div>
         </li>
     <% }); %>
@@ -98,7 +100,7 @@ async function changeTaskClosedState(button, taskId) {
 
         await changeTaskCloseStateApi(taskId, currentStateClosed) ;
 
-        if (currentStateClosed=== notClosedText) {
+        if (currentStateClosed === notClosedText) {
             taskItem.classList.add("task-item-closed");
             showValue.textContent  = closedText;
         } else {
