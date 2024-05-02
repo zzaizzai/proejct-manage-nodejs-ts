@@ -19,6 +19,11 @@ nvm install v18.17.0
 ```
 
 
+## DataAcess Permission
+```
+ls -l db/database.db
+sudo chmod 777 database.db
+```
 
 
 ## SSL memo
@@ -34,4 +39,16 @@ sudo certbot --nginx
 ```
 sudo crontab -e
 0 0 * * * sudo certbot renew --renew-hook="sudo service nginx restart"
+```
+
+
+## ubuntu update
+
+```
+cd /srv/projectdir
+sudo git reset --hard HEAD
+sudo git pull origin master
+sudo pkill -f "node"
+nohup npm start &
+exit
 ```

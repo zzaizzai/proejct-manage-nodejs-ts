@@ -35,6 +35,30 @@ router.get('/reset_all_tables', async (req, res) => {
 
 
 
+router.post('/tasks/add', async (req, res) => {
+    const name = req.body.name as string;
+    const description = req.body.description as string;
+    const projectId: number = req.body.project_id as number;
+
+    console.log(projectId)
+
+    if (!name || !description) {
+        console.log('no name or description')
+        return res.status(400).json({error: "no name or description"})
+    }
+
+    try {
+        await Task.createTask({name: name, description: description, parentProjectId: projectId, author: 'testuser' })
+        return res.status(200).send({result: "good"})
+    } catch {
+
+        return res.status(400).send("bed")
+    }
+
+})
+
+
+
 router.get('/get_all_tasks_with_parent_project_id', async (req, res) => {
 
     const parentProjectId = parseInt(req.query.parent_project_id as string);
