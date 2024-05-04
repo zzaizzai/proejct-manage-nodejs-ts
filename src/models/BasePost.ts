@@ -11,7 +11,7 @@ export abstract class BasePost {
     private author: string;
     private is_closed: boolean;
     private due_date: Date | undefined;
-
+    
     constructor(
         { 
             id = -1, 
@@ -45,6 +45,9 @@ export abstract class BasePost {
 
     public getId(): number {return this.id}
     public getIsClosed(): boolean {return this.is_closed}
+    public getCreatedAt(): Date {return this.created_at}
+    public getUpdatedAt(): Date {return this.updated_at}
+    public getDueDate(): Date | undefined {return this.due_date}
 
     protected static getCommonColumns(): string {
         const sql: string = `
@@ -81,10 +84,10 @@ export abstract class BasePost {
     }
 
     public displayCreatedAt(): string {
-        return this.datetimeFormat(this.created_at);
+        return this.datetimeFormat(this.getCreatedAt());
     }
     public displayUpdatedAt(): string {
-        return this.datetimeFormat(this.updated_at);
+        return this.datetimeFormat(this.getUpdatedAt());
     }
 
     protected datetimeFormat(datetime: Date): string {
