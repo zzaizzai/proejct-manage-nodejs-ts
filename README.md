@@ -52,3 +52,9 @@ sudo pkill -f "node"
 nohup npm start &
 exit
 ```
+
+
+## ts compile 
+```
+tsc -w
+```
