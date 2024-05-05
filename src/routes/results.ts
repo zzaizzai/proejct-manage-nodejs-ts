@@ -64,7 +64,7 @@ router.get('/detail', async (req, res) => {
     try {
 
         const result = await Result.getResultWithId(idNumber);
-        const project = await Project.getProjectWithId(result.parent_project_id)
+        const project = await Project.getProjectWithId(result.parentProjectId())
 
         res.render('results/detail', { projectInformation: {id: project.getId() } , item: result, parentItem: project });
         

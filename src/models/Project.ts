@@ -1,5 +1,5 @@
 import { db } from '../db'
-import { BasePost } from './BasePost'
+import {BasePost} from './BasePost'
 
 class Project extends BasePost {
 
@@ -44,7 +44,8 @@ class Project extends BasePost {
                 created_at: row.created_at,
                 updated_at: row.updated_at,
                 author: row.author,
-                is_closed: row.is_closed
+                is_closed: row.is_closed,
+                due_date: row.due_date
             });
         });
 
@@ -114,7 +115,8 @@ class Project extends BasePost {
                 created_at: row.created_at,
                 updated_at: row.updated_at,
                 author: row.author,
-                is_closed: row.is_closed
+                is_closed: row.is_closed,
+                due_date: row.due_date
             });
         });
 
@@ -136,7 +138,8 @@ class Project extends BasePost {
                     created_at: row.created_at,
                     updated_at: row.updated_at,
                     author: row.author,
-                    is_closed: row.is_closed
+                    is_closed: row.is_closed,
+                    due_date: row.due_date
             });
 
             return tasks;

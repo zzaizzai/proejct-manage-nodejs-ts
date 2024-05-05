@@ -2,52 +2,52 @@ import { db } from '../db'
 import moment from 'moment';
 
 
-export abstract class BasePost {
-    private id: number;
-    private name: string;
-    private description: string;
-    private created_at: Date;
-    private updated_at: Date;
-    private author: string;
-    private is_closed: boolean;
-    private due_date: Date | undefined;
-    
-    constructor(
-        { 
-            id = -1, 
-            name, description, 
-            created_at = new Date(), 
-            updated_at = new Date(), 
-            author = 'unknown', 
-            is_closed = false, 
-            due_date = undefined 
-        }:
-        { 
-            id?: number, 
-            name: string, 
-            description: string, 
-            created_at?: Date, 
-            updated_at?: Date, 
-            author?: string, 
-            is_closed: boolean, 
-            due_date?: Date 
-        }) 
-        {
-            this.id = id;
-            this.name = name;
-            this.description = description;
-            this.created_at = created_at;
-            this.updated_at = updated_at;
-            this.author = author;
-            this.is_closed = is_closed;
-            this.due_date = due_date
-        }
+export interface BasePostData {
+    id: number;
+    name: string;
+    description: string;
+    created_at: Date;
+    updated_at: Date;
+    author: string;
+    is_closed: boolean;
+    due_date:Date | undefined;
+}
 
-    public getId(): number {return this.id}
-    public getIsClosed(): boolean {return this.is_closed}
-    public getCreatedAt(): Date {return this.created_at}
-    public getUpdatedAt(): Date {return this.updated_at}
-    public getDueDate(): Date | undefined {return this.due_date}
+export abstract class BasePost {
+    protected _data: BasePostData;
+
+    private _originalValues: { [key: string]: any };
+    
+    constructor(data: BasePostData) 
+        {   
+            this._data = {
+
+                id : data.id,
+                name : data.name,
+                description : data.description,
+                created_at : data.created_at,
+                updated_at : data.updated_at,
+                author : data.author,
+                is_closed : data.is_closed,
+                due_date : data.due_date,
+            }
+
+
+            this._originalValues = {}
+            for (const key in this) {
+                if (Object.prototype.hasOwnProperty.call(this, key)) {
+                    this._originalValues[key] = this[key];
+                }
+            }
+
+        }
+        
+
+    public getId(): number {return this._data.id}
+    public getIsClosed(): boolean {return this._data.is_closed}
+    public getCreatedAt(): Date {return this._data.created_at}
+    public getUpdatedAt(): Date {return this._data.updated_at}
+    public getDueDate(): Date | undefined {return this._data.due_date}
 
     protected static getCommonColumns(): string {
         const sql: string = `
@@ -137,7 +137,7 @@ export abstract class BasePost {
 
     public async setIsClosed(tableName: string, changeToState: boolean): Promise<void> {
 
-        const updateSql = `UPDATE ${tableName} SET is_closed = ${changeToState} WHERE id = ${this.id};`;
+        const updateSql = `UPDATE ${tableName} SET is_closed = ${changeToState} WHERE id = ${this.getId()};`;
 
         return new Promise<void>((resolve, reject) => {
             db.all(updateSql, (err, rows) => {
