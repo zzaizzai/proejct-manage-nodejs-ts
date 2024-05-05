@@ -1,7 +1,7 @@
 // porjects.ts
 import express from 'express';
 import Project from '../models/Project';
-import { Task } from '../models/Task';
+import  Task  from '../models/Task';
 
 const router = express.Router();
 

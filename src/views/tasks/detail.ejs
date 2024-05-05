@@ -9,9 +9,9 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="item-details">
-                    <h3 class="item-name"><%= parentItem.name %></h3>
-                    <p class="item-description"><%= parentItem.description %></p>
-                    <p class="item-author">Author: <%= parentItem.author %></p>
+                    <h3 class="item-name"><%= parentItem.getName() %></h3>
+                    <p class="item-description"><%= parentItem.getDescription() %></p>
+                    <p class="item-author">Author: <%= parentItem.getAuthor() %></p>
                 </div>
             </div>
             <div class="col-md-3">
@@ -32,9 +32,9 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="task-details">
-                        <h3 class="task-name"><%= item.name %></h3>
-                        <p class="task-description"><%= item.description %></p>
-                        <p class="task-author">Author: <%= item.author %></p>
+                        <h3 class="task-name"><%= item.getName() %></h3>
+                        <p class="task-description"><%= item.getDescription() %></p>
+                        <p class="task-author">Author: <%= item.getAuthor() %></p>
                     </div>
                 </div>
                 <div class="col-md-3">

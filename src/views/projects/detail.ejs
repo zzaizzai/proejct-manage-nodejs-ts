@@ -9,9 +9,9 @@
             <div class="row">
                 <div class="col">
                     <div class="item-details">
-                        <h3 class="item-name"><%= item.name %></h3>
-                        <p class="item-description"><%= item.description %></p>
-                        <p class="item-author">Author: <%= item.author %></p>
+                        <h3 class="item-name"><%= item.getName() %></h3>
+                        <p class="item-description"><%= item.getDescription() %></p>
+                        <p class="item-author">Author: <%= item.getAuthor() %></p>
                     </div>
                 </div>
                 <div class="col-3">
@@ -160,22 +160,22 @@ async function modalfuntion(button) {
 
 <ul class="list-group task-list">
     <% childItems.forEach(task => { %>
-        <li class="list-group-item task-item <%= task.is_closed ? "task-item-closed" : "" %> ">
+        <li class="list-group-item task-item <%= task.getIsClosed() ? "task-item-closed" : "" %> ">
             <div class="row">
                 <div class="col-md-7">
                     <div class="task-details">
-                        <h3 class="task-name"><%= task.name %></h3>
-                        <p class="task-author">Author: <%= task.author %></p>
+                        <h3 class="task-name"><%= task.getName() %></h3>
+                        <p class="task-author">Author: <%= task.getAuthor() %></p>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <p class="task-date">Created At: <%= task.displayCreatedAt() %></p>
                     <p class="task-date">Updated At: <%= task.displayUpdatedAt() %></p>
                 </div>
-                <div hidden class="show-value-is-closed"><%= task.is_closed %></div>
+                <div hidden class="show-value-is-closed"><%= task.getIsClosed() %></div>
                 <div class="row">
-                    <button class="btn btn-outline-primary" onclick="changeTaskClosedState(this, <%= task.id %>)">Change State</button>
-                    <button class="btn btn-outline-success" onclick="getAllTasksWithParentProject(this, <%= task.id %>)">Show Results</button>
+                    <button class="btn btn-outline-primary" onclick="changeTaskClosedState(this, <%= task.getId() %>)">Change State</button>
+                    <button class="btn btn-outline-success" onclick="getAllTasksWithParentProject(this, <%= task.getId() %>)">Show Results</button>
                 </div>
             </div>
         </li>
@@ -229,7 +229,7 @@ async function getAllTasksWithParentProject(button, taskId) {
         return
     }
 
-    const tasks = await getAllTasksWithParentProjectIdApi(taskId)
+    const tasks = await getAllTasksWithParentProjectIdApi(parseInt(taskId))
 
     // no item
     if (!tasks.length) {
@@ -242,10 +242,10 @@ async function getAllTasksWithParentProject(button, taskId) {
 
     // default
     tasks.forEach(task => {
-        const listItem = document.createElement('li');
+        const listItem = document.createElement('a');
         listItem.classList.add('list-group-item');
-        listItem.textContent = task.name;
-
+        listItem.textContent = task._data.name;
+        listItem.setAttribute('href', `/results/detail?id=${task._data.id}`)
         button.closest('.task-item').appendChild(listItem);
     });
 }

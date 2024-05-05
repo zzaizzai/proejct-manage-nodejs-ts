@@ -15,8 +15,6 @@ export interface BasePostData {
 
 export abstract class BasePost {
     protected _data: BasePostData;
-
-    private _originalValues: { [key: string]: any };
     
     constructor(data: BasePostData) 
         {   
@@ -33,17 +31,13 @@ export abstract class BasePost {
             }
 
 
-            this._originalValues = {}
-            for (const key in this) {
-                if (Object.prototype.hasOwnProperty.call(this, key)) {
-                    this._originalValues[key] = this[key];
-                }
-            }
-
         }
         
 
     public getId(): number {return this._data.id}
+    public getName(): string {return this._data.name}
+    public getDescription(): string {return this._data.description}
+    public getAuthor(): string {return this._data.author}
     public getIsClosed(): boolean {return this._data.is_closed}
     public getCreatedAt(): Date {return this._data.created_at}
     public getUpdatedAt(): Date {return this._data.updated_at}

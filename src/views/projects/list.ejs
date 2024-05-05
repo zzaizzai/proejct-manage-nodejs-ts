@@ -9,12 +9,12 @@
             <div class="row">
                 <div class="col-md-7">
                     <div class="item-details">
-                        <h3 class="item-name"><a href="/projects/detail?id=<%= project.id %>"><%= project.id %>. <%= project.name %></a></h3>
-                        <p class="item-description"><%= project.description %></p>
+                        <h3 class="item-name"><a href="/projects/detail?id=<%= project.getId() %>"><%= project.getId() %>. <%= project.getName() %></a></h3>
+                        <p class="item-description"><%= project.getDescription() %></p>
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <p class="item-author">Author: <%= project.author %></p>
+                    <p class="item-author">Author: <%= project.getAuthor() %></p>
                     <p class="item-date">Created At: <%= project.displayCreatedAt() %></p>
                     <p class="item-date">Updated At: <%= project.displayUpdatedAt() %></p>
                 </div>

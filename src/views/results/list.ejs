@@ -9,9 +9,9 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="item-details">
-                        <h3 class="item-name"><a href="/results/detail?id=<%= item.id %>"><%= item.id %>. <%= item.name %></a></h3>
-                        <p class="item-description"><%= item.description %></p>
-                        <p class="item-author">Author: <%= item.author %></p>
+                        <h3 class="item-name"><a href="/results/detail?id=<%= item.getId() %>"><%= item.getId() %>. <%= item.getName() %></a></h3>
+                        <p class="item-description"><%= item.getDescription() %></p>
+                        <p class="item-author">Author: <%= item.getAuthor() %></p>
                     </div>
                 </div>
                 <div class="col-md-3">

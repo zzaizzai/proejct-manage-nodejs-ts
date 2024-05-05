@@ -1,6 +1,6 @@
 import express from 'express';
 import Project from '../models/Project';
-import { Task } from '../models/Task';
+import  Task  from '../models/Task';
 import { Result } from '../models/Result';
 import { sleep }  from '../utils/func_times'
 

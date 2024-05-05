@@ -1,45 +1,48 @@
 import { db } from '../db'
-import { BasePost } from './BasePost'
+import { BasePost, BasePostData } from './BasePost'
 
 
-export class Task extends BasePost {
+interface TaskData extends BasePostData {
+    parent_project_id: number;
+}
 
-    private parent_project_id?: number;
+class Task extends BasePost {
 
+    protected _data: TaskData;
+    
     static readonly TABLE_NAME: string = 'tasks'
 
-    constructor(
-        { 
-            id = -1,
-            name,
-            description,
-            created_at = new Date(),
-            updated_at = new Date(),
-            author = 'unknown',
-            is_closed = false,
-            due_date = new Date(),
-            parent_project_id = undefined
-        }:
-        {
-            id?: number,
-            name: string,
-            description: string,
-            created_at?: Date,
-            updated_at?: Date,
-            author?: string,
-            is_closed: boolean,
-            due_date?: Date,
-            parent_project_id?: number;
-        }) {
-        super({ id, name, description, created_at, updated_at, author, is_closed, due_date });
-        this.parent_project_id = parent_project_id
+    constructor(data: TaskData) {
+        super({ 
+            id: data.id, 
+            name: data.name, 
+            description: data.description, 
+            created_at: data.created_at, 
+            updated_at: data.updated_at, 
+            author: data.author, 
+            is_closed: data.is_closed ,
+            due_date: data.due_date
+        });
+
+        this._data =  {
+            id: data.id, 
+            name: data.name, 
+            description: data.description, 
+            created_at: data.created_at, 
+            updated_at: data.updated_at, 
+            author: data.author, 
+            is_closed: data.is_closed ,
+            due_date: data.due_date,
+            parent_project_id: data.parent_project_id
+
+        }
     }
 
     displayInfo() {
-        return { ...super.displayInfo(), parent_project_id: this.parent_project_id };
+        return { ...super.displayInfo(), parent_project_id: this._data.parent_project_id };
     }
 
-    public getParentProjectId(): number | undefined { return this.parent_project_id}
+    public getParentProjectId(): number | undefined { return this._data.parent_project_id}
 
     static createTask = async (
         { name = 'unknowon', description = 'no description', author = 'unknown', parentProjectId }:
@@ -115,6 +118,7 @@ export class Task extends BasePost {
                 updated_at: row.updated_at,
                 author: row.author,
                 is_closed: row.is_closed,
+                due_date: row.due_date,
                 parent_project_id: row.parent_project_id
         });
 
@@ -154,6 +158,7 @@ export class Task extends BasePost {
                 updated_at: row.updated_at,
                 author: row.author,
                 is_closed: row.is_closed,
+                due_date: row.due_date,
                 parent_project_id: row.parent_project_id
             });
         });
@@ -183,6 +188,7 @@ export class Task extends BasePost {
                     updated_at: row.updated_at,
                     author: row.author,
                     is_closed: row.is_closed,
+                    due_date: row.due_date,
                     parent_project_id: row.parent_project_id
                 });
             });
