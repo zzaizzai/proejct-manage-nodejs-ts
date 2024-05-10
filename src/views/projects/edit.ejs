@@ -1,0 +1,107 @@
+<%- include("../header") %> 
+<%- include("../components/navbar") %>
+<%- include("../components/flash_msg") %>
+
+<h2>Project Edit Page</h2>
+<% items.forEach(item => { %>
+    <div class="edit-project-layout">
+        <div class="item-author">Author: <%= item.getAuthor() %></div>
+        <div class="item-date">Created At: <%= item.displayCreatedAt() %></div>
+        <div class="item-date">Updated At: <%= item.displayUpdatedAt() %></div>
+
+
+        <input hidden type="text" name="id" value="<%= item.getId() %>" >
+        <input type="text" name="name" value="<%= item.getName() %>" >
+        <br>
+        <textarea type="text" name="description"><%= item.getDescription() %></textarea>
+
+
+        <button onclick="editProject(this)">Edit</button>
+    </div>
+<% }); %>
+
+<br>
+
+
+
+<script>
+function editProject(button) {
+    const editProjectLayout = $(button).closest('.edit-project-layout');
+    const projectId = editProjectLayout.find('[name="id"]').val()
+    console.log(projectId)
+    console.log(editProjectLayout);
+}
+</script>
+
+
+
+
+<script type="text/javascript" src="/js/common.js"></script>
+<script type="text/javascript" src="/js/projects/detail_api.js"></script>
+
+<script>
+async function changeTaskClosedState(button, taskId) {
+    const closedText = "1"
+    const notClosedText = "0"
+
+    try {
+
+        const taskItem = button.closest('.task-item')
+        const showValue = taskItem.querySelector('.show-value-is-closed');
+        const currentStateClosed = String(showValue.textContent)
+        console.log()
+
+        if (currentStateClosed === notClosedText) {
+            taskItem.classList.add("task-item-closed");
+            showValue.textContent  = closedText;
+        } else {
+            taskItem.classList.remove("task-item-closed");
+            showValue.textContent  = notClosedText;
+        }
+
+        await changeTaskCloseStateApi(taskId, currentStateClosed) ;
+        setTimeout(function() {
+            location.reload();
+        }, 200);
+
+    } catch (err) {
+        console.error(err)
+    }
+};
+
+async function getAllTasksWithParentProject(button, taskId) {
+
+    // remove already exist items
+    const taskListOfResult = button.closest('.task-item').querySelectorAll('.list-group-item'); // : Node[]
+
+    if (taskListOfResult.length > 0) {
+        taskListOfResult.forEach(item => {
+            item.remove()
+        })
+        return
+    }
+
+    const tasks = await getAllTasksWithParentProjectIdApi(parseInt(taskId))
+
+    // no item
+    if (!tasks.length) {
+        const noItem = document.createElement('li');
+        noItem.classList.add('list-group-item');
+        noItem.textContent = "no item"
+
+        button.closest('.task-item').appendChild(noItem);
+    }
+
+    // default
+    tasks.forEach(task => {
+        const listItem = document.createElement('a');
+        listItem.classList.add('list-group-item');
+        listItem.textContent = task._data.name;
+        listItem.setAttribute('href', `/results/detail?id=${task._data.id}`)
+        button.closest('.task-item').appendChild(listItem);
+    });
+}
+
+</script>
+
+<%- include("../footer") %>

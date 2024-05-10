@@ -75,6 +75,33 @@ router.get('/detail', async (req, res) => {
     }
 });
 
+router.get('/edit', async (req, res) => {
+
+    const idString = req.query.id as string;
+    const idNumber = parseInt(idString, 10);
+
+    if (isNaN(idNumber)) {
+        console.error('Failed to parse id:', idString);
+        return res.status(500).json({ error: 'Bed Method' });
+    }
+
+
+    try {
+
+        const projects = await Project.getProjectsWithId(idNumber);
+
+        if (!projects.length) {
+            return res.redirect('/projects/list')
+        }
+
+        res.render('projects/edit', { items: projects });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to retrieve projects' });
+    }
+});
+
+
 router.get('/create', async (req, res) => {
 
     const name = req.query.name as string;
