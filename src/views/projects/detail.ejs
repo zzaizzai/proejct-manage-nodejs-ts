@@ -3,7 +3,11 @@
 <%- include("../components/flash_msg") %>
 
 <h2>Project Detail Page</h2>
+
+
+
 <% items.forEach(item => { %>
+    <a class="btn btn-success" href="/projects/edit?id=<%= item.getId() %>">Edit</a>
     <ul class="list-group item-list">
         <li class="list-group-item">
             <div class="row">

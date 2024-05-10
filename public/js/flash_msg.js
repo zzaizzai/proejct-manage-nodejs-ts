@@ -20,3 +20,8 @@ function createFlashMsg(message, state = "primary") {
     flashMessage.append(closeButton);
     return flashMessage;
 }
+function createAndShowUnderNavBarFlashMsg(message, state = "primary") {
+    const flashMsgElement = createFlashMsg(message, state);
+    // Exists in flash_msg.ejs
+    $('.flash-message-layout').append(flashMsgElement);
+}

@@ -27,9 +27,17 @@ app
 
 
 app.get('/', (req: Request, res: Response)=> {
-    req.flash('good')
+    req.flash('waring', 'waring')
 
     res.render('index', { name: `junsai's project page` });
+})
+
+
+
+app.post('/flash_test', (req: Request, res: Response)=> {
+    req.flash('flash_test')
+
+    return res.send("good")
 })
 
 

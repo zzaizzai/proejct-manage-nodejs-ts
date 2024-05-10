@@ -25,3 +25,11 @@ function createFlashMsg(message: string, state: string = "primary"): JQuery<HTML
 
     return flashMessage;
 }
+
+function createAndShowUnderNavBarFlashMsg(message: string, state: string = "primary"): void {
+    const flashMsgElement = createFlashMsg(message, state)
+
+    // Exists in flash_msg.ejs
+    $('.flash-message-layout').append(flashMsgElement);
+
+}

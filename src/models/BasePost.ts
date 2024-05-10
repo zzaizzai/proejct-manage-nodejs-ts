@@ -20,7 +20,6 @@ export abstract class BasePost {
     constructor(data: BasePostData) 
         {   
             this._data = {
-
                 id : data.id,
                 name : data.name,
                 description : data.description,
@@ -45,6 +44,11 @@ export abstract class BasePost {
     public getUpdatedAt(): Date {return this._data.updated_at}
     public getDueDate(): Date | undefined {return this._data.due_date}
     public getClosedAt(): Date | undefined {return this._data.closed_at}
+
+    public getStrForSql(str: string): string { return str.replace(/'/g, "''") }
+
+    public setName(name: string): BasePost { this._data.name = name; return this; }
+    public setDescription(description: string): BasePost { this._data.description = description; return this; }
 
     protected static getCommonColumns(): string {
         const sql: string = `

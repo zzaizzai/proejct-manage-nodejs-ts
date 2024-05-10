@@ -20,6 +20,7 @@ router.post('/test', async (req, res) => {
     }
 })
 
+
 router.get('/test', async (req, res) => {
     await sleep(2000);
     return res.send({test: "test"})
@@ -32,6 +33,7 @@ router.get('/reset_all_tables', async (req, res) => {
     await Result.resetTable();
     return res.status(200).send({message: 'Succeed Reset Tables'});
 })
+
 
 
 

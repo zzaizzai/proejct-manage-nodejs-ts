@@ -11,9 +11,9 @@
 
 
         <input hidden type="text" name="id" value="<%= item.getId() %>" >
-        <input type="text" name="name" value="<%= item.getName() %>" >
+        <input type="text" class="form-control-sm w-50" name="name" value="<%= item.getName() %>" >
         <br>
-        <textarea type="text" name="description"><%= item.getDescription() %></textarea>
+        <textarea  class="form-control-sm w-50"  name="description"><%= item.getDescription() %></textarea>
 
 
         <button onclick="editProject(this)">Edit</button>
@@ -25,81 +25,58 @@
 
 
 <script>
-function editProject(button) {
+async function editProject(button) {
     const editProjectLayout = $(button).closest('.edit-project-layout');
     const projectId = editProjectLayout.find('[name="id"]').val()
-    console.log(projectId)
-    console.log(editProjectLayout);
-}
-</script>
+    const description = editProjectLayout.find('[name="description"]').val()
+    const projectName = editProjectLayout.find('[name="name"]').val()
+    await editProject(projectId)
 
-
-
-
-<script type="text/javascript" src="/js/common.js"></script>
-<script type="text/javascript" src="/js/projects/detail_api.js"></script>
-
-<script>
-async function changeTaskClosedState(button, taskId) {
-    const closedText = "1"
-    const notClosedText = "0"
-
-    try {
-
-        const taskItem = button.closest('.task-item')
-        const showValue = taskItem.querySelector('.show-value-is-closed');
-        const currentStateClosed = String(showValue.textContent)
-        console.log()
-
-        if (currentStateClosed === notClosedText) {
-            taskItem.classList.add("task-item-closed");
-            showValue.textContent  = closedText;
-        } else {
-            taskItem.classList.remove("task-item-closed");
-            showValue.textContent  = notClosedText;
-        }
-
-        await changeTaskCloseStateApi(taskId, currentStateClosed) ;
-        setTimeout(function() {
-            location.reload();
-        }, 200);
-
-    } catch (err) {
-        console.error(err)
-    }
-};
-
-async function getAllTasksWithParentProject(button, taskId) {
-
-    // remove already exist items
-    const taskListOfResult = button.closest('.task-item').querySelectorAll('.list-group-item'); // : Node[]
-
-    if (taskListOfResult.length > 0) {
-        taskListOfResult.forEach(item => {
-            item.remove()
+    function editProject(projectId) {
+        $.ajax({
+            url: '/projects/edit',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                project_id: projectId,
+                description: description,
+                name: projectName
+            }),
+            success: function(response) {
+                flash_tesr()
+                window.location.href = `/projects/detail?id=${projectId}`
+            },
+            error: function(xhr, status, error) {
+                console.error('Error fetching tasks:', error);
+                flash_tesr()
+                // createAndShowUnderNavBarFlashMsg(`API Error: ${error}`, "danger")
+            }
         })
-        return
-    }
+        .always(function() {
+            console.log('Request completed.'); // This will execute whether the request is successful or not.
+        });
+}
+}
 
-    const tasks = await getAllTasksWithParentProjectIdApi(parseInt(taskId))
 
-    // no item
-    if (!tasks.length) {
-        const noItem = document.createElement('li');
-        noItem.classList.add('list-group-item');
-        noItem.textContent = "no item"
+function flash_tesr() {
+        $.ajax({
+            url: '/flash_test',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+            }),
+            success: function(response) {
+                console.log(response)
 
-        button.closest('.task-item').appendChild(noItem);
-    }
-
-    // default
-    tasks.forEach(task => {
-        const listItem = document.createElement('a');
-        listItem.classList.add('list-group-item');
-        listItem.textContent = task._data.name;
-        listItem.setAttribute('href', `/results/detail?id=${task._data.id}`)
-        button.closest('.task-item').appendChild(listItem);
-    });
+            },
+            error: function(xhr, status, error) {
+                console.error('Error fetching tasks:', error);
+            }
+        })
+        .always(function() {
+            console.log('Request completed.'); // This will execute whether the request is successful or not.
+        });
 }
 
 </script>

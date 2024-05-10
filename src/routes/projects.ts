@@ -32,8 +32,8 @@ router.get('/list', async (req, res) => {
         res.render('projects/list',
             {
                 projects: [],
-                flash_error_msgs: ['failed to get project list'],
-                flash_success_msgs: null
+                flash_error_msgs: req.flash('waring'),
+                flash_success_msgs: req.flash('success')
             });
     }
 });
@@ -68,7 +68,11 @@ router.get('/detail', async (req, res) => {
             return res.redirect('/projects/list')
         }
 
-        res.render('projects/detail', { items: projects, childItems: tasks });
+        res.render('projects/detail', {                 
+        flash_error_msgs: req.flash('waring'),
+        flash_success_msgs: req.flash('success'),
+        items: projects, childItems: tasks 
+    });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Failed to retrieve projects' });
@@ -120,5 +124,21 @@ router.get('/create', async (req, res) => {
         res.status(500).json({ error: 'Failed to retrieve projects' });
     }
 });
+
+
+router.post('/edit', async (req, res) => {
+
+    const name = req.body.name as string;
+    const description = req.body.description as string;
+    const projectId: number = req.body.project_id as number;
+
+    const project = await Project.getProjectWithId(projectId)
+
+    project.setName(name).setDescription(description)
+    await project.saveEditProject()
+
+    req.flash('success', 'succeed to edit project!')
+    return res.status(200).send({message: project})
+})
 
 export default router;
