@@ -2,12 +2,19 @@
 <%- include("../components/navbar") %>
 <%- include("../components/flash_msg") %>
 
-<h2>Project Detail Page</h2>
+
 
 
 
 <% items.forEach(item => { %>
-    <a class="btn btn-success" href="/projects/edit?id=<%= item.getId() %>">Edit</a>
+    <div class="d-flex flex-row">
+        <h2>Project Detail Page</h2>
+        <a class="btn" href="/projects/edit?id=<%= item.getId() %>">
+            <img width="30" src="/images/edit.png" type="submit" style="cursor:pointer;" name="edit">
+        </a>
+        <div class="mx-auto"></div>
+    </div>
+
     <ul class="list-group item-list">
         <li class="list-group-item">
             <div class="row">
@@ -28,7 +35,7 @@
 <% }); %>
 
 <br>
-<h2>Task List</h2>
+
 
 <style>
 .task-input-width {
@@ -46,11 +53,14 @@
 
 
 
-
-<!-- Modal Button -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addTaskModal">
-    Add Task
-</button>
+<div class="d-flex flex-row">
+    <h2>Task List</h2>
+    <!-- Modal Button -->
+    <button type="button" class="btn" data-toggle="modal" data-target="#addTaskModal">
+        <img width="30" src="/images/plus.png" type="submit" style="cursor:pointer; color: blue;" name="edit">
+    </button>
+    <div class="mx-auto"></div>
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="addTaskModal">
