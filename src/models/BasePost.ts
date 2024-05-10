@@ -10,7 +10,8 @@ export interface BasePostData {
     updated_at: Date;
     author: string;
     is_closed: boolean;
-    due_date:Date | undefined;
+    closed_at: Date | undefined;
+    due_date: Date | undefined;
 }
 
 export abstract class BasePost {
@@ -28,6 +29,7 @@ export abstract class BasePost {
                 author : data.author,
                 is_closed : data.is_closed,
                 due_date : data.due_date,
+                closed_at: data.closed_at
             }
 
 
@@ -42,6 +44,7 @@ export abstract class BasePost {
     public getCreatedAt(): Date {return this._data.created_at}
     public getUpdatedAt(): Date {return this._data.updated_at}
     public getDueDate(): Date | undefined {return this._data.due_date}
+    public getClosedAt(): Date | undefined {return this._data.closed_at}
 
     protected static getCommonColumns(): string {
         const sql: string = `
@@ -50,6 +53,7 @@ export abstract class BasePost {
         description TEXT,
         created_at TIMESTAMP  DEFAULT (DATETIME(CURRENT_TIMESTAMP,'localtime')),
         updated_at TIMESTAMP  DEFAULT (DATETIME(CURRENT_TIMESTAMP,'localtime')),
+        closed_at TIMESTAMP,
         author TEXT NOT NULL,
         is_closed INTEGER DEFAULT 0
         `
@@ -84,8 +88,34 @@ export abstract class BasePost {
         return this.datetimeFormat(this.getUpdatedAt());
     }
 
+    public displayClosedAt(): string | undefined {
+        const closedAt = this.getClosedAt()
+        if (closedAt) {
+            return this.datetimeFormat(closedAt)
+        }
+        return ""
+    }
+
     protected datetimeFormat(datetime: Date): string {
         return moment(datetime).format('YY-MM-DD HH:mm:ss');
+    }
+
+    protected async setClosedAt(tableName: string, state: string = 'now'): Promise<void> {
+
+        var updateSql = `UPDATE ${tableName} SET closed_at = NULL WHERE id = ${this.getId()};`;
+        if (state == 'now') {
+            updateSql = `UPDATE ${tableName} SET closed_at = DATETIME('now') WHERE id = ${this.getId()};`;
+        } 
+
+        return new Promise<void>((resolve, reject) => {
+            db.all(updateSql, (err, rows) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve();
+            });
+        });
     }
 
     protected static dropTable = async (tableName: string): Promise<void> => {
@@ -129,7 +159,7 @@ export abstract class BasePost {
     };
 
 
-    public async setIsClosed(tableName: string, changeToState: boolean): Promise<void> {
+    protected async setIsClosed(tableName: string, changeToState: boolean): Promise<void> {
 
         const updateSql = `UPDATE ${tableName} SET is_closed = ${changeToState} WHERE id = ${this.getId()};`;
 

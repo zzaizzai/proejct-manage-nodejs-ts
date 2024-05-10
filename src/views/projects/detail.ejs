@@ -152,10 +152,14 @@ async function modalfuntion(button) {
 
 <style>
 
-    .task-item-closed .task-name{
-        text-decoration: line-through;
+.task-item {
+    /* transition 속성을 사용하여 background-color의 변화에 0.2초 동안 서서히 효과를 부여합니다. */
+    transition: background-color 0.2s ease-in;
+}
 
-    }
+.task-item.task-item-closed {
+    background-color: gray;
+}
 </style>
 
 <ul class="list-group task-list">
@@ -169,8 +173,16 @@ async function modalfuntion(button) {
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <p class="task-date">Created At: <%= task.displayCreatedAt() %></p>
-                    <p class="task-date">Updated At: <%= task.displayUpdatedAt() %></p>
+                    <p class="task-date">Created: <%= task.displayCreatedAt() %></p>
+                    <p class="task-date">Updated: <%= task.displayUpdatedAt() %></p>
+                    <% const closedAt = task.displayClosedAt(); %>
+
+                    <% if (closedAt) { %>
+                        <p class="task-date">Completed: <%= closedAt %></p>
+                    <% } else { %>
+                        <p class="task-date">Not completed yet</p>
+                    <% } %>
+
                 </div>
                 <div hidden class="show-value-is-closed"><%= task.getIsClosed() %></div>
                 <div class="row">
@@ -202,8 +214,6 @@ async function changeTaskClosedState(button, taskId) {
         const currentStateClosed = String(showValue.textContent)
         console.log()
 
-        await changeTaskCloseStateApi(taskId, currentStateClosed) ;
-
         if (currentStateClosed === notClosedText) {
             taskItem.classList.add("task-item-closed");
             showValue.textContent  = closedText;
@@ -211,6 +221,8 @@ async function changeTaskClosedState(button, taskId) {
             taskItem.classList.remove("task-item-closed");
             showValue.textContent  = notClosedText;
         }
+
+        await changeTaskCloseStateApi(taskId, currentStateClosed) ;
 
     } catch (err) {
         console.error(err)

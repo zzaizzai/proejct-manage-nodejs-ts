@@ -45,7 +45,8 @@ class Project extends BasePost {
                 updated_at: row.updated_at,
                 author: row.author,
                 is_closed: row.is_closed,
-                due_date: row.due_date
+                due_date: row.due_date,
+                closed_at: row.closed_at
             });
         });
 
@@ -116,7 +117,8 @@ class Project extends BasePost {
                 updated_at: row.updated_at,
                 author: row.author,
                 is_closed: row.is_closed,
-                due_date: row.due_date
+                due_date: row.due_date,
+                closed_at: row.closed_at
             });
         });
 
@@ -139,7 +141,8 @@ class Project extends BasePost {
                     updated_at: row.updated_at,
                     author: row.author,
                     is_closed: row.is_closed,
-                    due_date: row.due_date
+                    due_date: row.due_date,
+                    closed_at: row.closed_at
             });
 
             return tasks;

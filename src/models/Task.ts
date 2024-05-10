@@ -21,7 +21,8 @@ class Task extends BasePost {
             updated_at: data.updated_at, 
             author: data.author, 
             is_closed: data.is_closed ,
-            due_date: data.due_date
+            due_date: data.due_date,
+            closed_at: data.closed_at
         });
 
         this._data =  {
@@ -33,7 +34,8 @@ class Task extends BasePost {
             author: data.author, 
             is_closed: data.is_closed ,
             due_date: data.due_date,
-            parent_project_id: data.parent_project_id
+            parent_project_id: data.parent_project_id,
+            closed_at: data.closed_at
 
         }
     }
@@ -119,7 +121,8 @@ class Task extends BasePost {
                 author: row.author,
                 is_closed: row.is_closed,
                 due_date: row.due_date,
-                parent_project_id: row.parent_project_id
+                parent_project_id: row.parent_project_id,
+                closed_at: row.closed_at
         });
 
         return project
@@ -159,7 +162,8 @@ class Task extends BasePost {
                 author: row.author,
                 is_closed: row.is_closed,
                 due_date: row.due_date,
-                parent_project_id: row.parent_project_id
+                parent_project_id: row.parent_project_id,
+                closed_at: row.closed_at
             });
         });
 
@@ -189,7 +193,8 @@ class Task extends BasePost {
                     author: row.author,
                     is_closed: row.is_closed,
                     due_date: row.due_date,
-                    parent_project_id: row.parent_project_id
+                    parent_project_id: row.parent_project_id,
+                    closed_at: row.closed_at
                 });
             });
 
@@ -202,12 +207,22 @@ class Task extends BasePost {
 
     public async setIsClosed(): Promise<void> {
         if (this.getIsClosed()) {
-            return super.setIsClosed(Task.TABLE_NAME, false)
+            await super.setClosedAt(Task.TABLE_NAME, 'null')
+            await super.setIsClosed(Task.TABLE_NAME, false)
+            return 
         }
-        return super.setIsClosed(Task.TABLE_NAME, true)
+        await super.setClosedAt(Task.TABLE_NAME, 'now')
+        await super.setIsClosed(Task.TABLE_NAME, true)
+        return 
+    }
+
+
+    public async setClosedAt(): Promise<void> {
+        return super.setClosedAt(Task.TABLE_NAME)
     }
 
 }
+
 
 
 export default Task;

@@ -23,7 +23,8 @@ export class Result extends BasePost {
             updated_at: data.updated_at, 
             author: data.author, 
             is_closed: data.is_closed ,
-            due_date: data.due_date
+            due_date: data.due_date,
+            closed_at: data.closed_at
         });
 
         this._data =  {
@@ -36,7 +37,8 @@ export class Result extends BasePost {
             is_closed: data.is_closed ,
             due_date: data.due_date,
             parent_project_id: data.parent_project_id,
-            parent_task_id: data.parent_task_id
+            parent_task_id: data.parent_task_id,
+            closed_at: data.closed_at
 
         }
     }
@@ -120,7 +122,8 @@ export class Result extends BasePost {
                 is_closed: row.is_closed,
                 due_date: row.due_date,
                 parent_project_id: row.parent_project_id,
-                parent_task_id: row.parent_project_id
+                parent_task_id: row.parent_project_id,
+                closed_at: row.closed_at
             });
         });
 
@@ -155,7 +158,8 @@ export class Result extends BasePost {
                 is_closed: row.is_closed,
                 due_date: row.due_date,
                 parent_project_id: row.parent_project_id,
-                parent_task_id: row.parent_project_id
+                parent_task_id: row.parent_project_id,
+                closed_at: row.closed_at
             });
         });
 
@@ -185,7 +189,8 @@ export class Result extends BasePost {
                     is_closed: row.is_closed,
                     due_date: row.due_date,
                     parent_project_id: row.parent_project_id,
-                    parent_task_id: row.parent_task_id
+                    parent_task_id: row.parent_task_id,
+                    closed_at: row.closed_at
             });
 
             return tasks;
