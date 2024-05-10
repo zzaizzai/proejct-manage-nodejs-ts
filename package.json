@@ -24,6 +24,7 @@
   "devDependencies": {
     "@types/express": "^4.17.21",
     "@types/express-session": "^1.18.0",
+    "@types/jquery": "^3.5.30",
     "concurrently": "^8.2.2",
     "nodemon": "^3.1.0",
     "ts-node": "^10.9.2",

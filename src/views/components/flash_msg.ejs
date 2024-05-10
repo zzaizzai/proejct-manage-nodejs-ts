@@ -1,25 +1,33 @@
-<% if (locals.flash_error_msgs) { %>
-    <% if (flash_error_msgs.length > 0) { %>
-        <div class="flash-message alert alert-danger d-flex justify-content-between align-items-center" role="alert">
-          <%= flash_error_msgs[0] %>
-          <button type="button" class="close alert-close-btn-lg" aria-label="Close" onclick="closeAlert(this)">
-            <span aria-hidden="true">&times;</span>
-        </button>
-        </div>
-    <% } %>
-<% } %>
+<div class="flash-message-layout">
 
-<% if (locals.flash_success_msgs) { %>
-    <% if (flash_success_msgs.length > 0) { %>
-        <div class="flash-message alert alert-primary d-flex justify-content-between align-items-center" role="alert">
-            <%= flash_success_msgs[0] %>
-            <button type="button" class="close alert-close-btn-lg" aria-label="Close" onclick="closeAlert(this)">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
+    <% if (locals.flash_error_msgs) { %>
+        <% if (flash_error_msgs.length > 0) { %>
+            <div class="flash-message-box">
+                <div class="flash-message alert alert-danger d-flex justify-content-between align-items-center" role="alert">
+                    <%= flash_error_msgs[0] %>
+                    <button type="button" class="close alert-close-btn-lg" aria-label="Close" onclick="closeAlert(this)">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+                  </div>
+            </div>
+        <% } %>
     <% } %>
-<% } %>
+    
+    <% if (locals.flash_success_msgs) { %>
+        <% if (flash_success_msgs.length > 0) { %>
+            <div class="flash-message-box">
+                <div class="flash-message alert alert-primary d-flex justify-content-between align-items-center" role="alert">
+                    <%= flash_success_msgs[0] %>
+                    <button type="button" class="close alert-close-btn-lg" aria-label="Close" onclick="closeAlert(this)">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+        <% } %>
+    <% } %>
 
+    
+</div>
 <style>
     .flash-message {
         display: flex;
