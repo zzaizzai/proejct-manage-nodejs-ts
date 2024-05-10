@@ -153,7 +153,6 @@ async function modalfuntion(button) {
 <style>
 
 .task-item {
-    /* transition 속성을 사용하여 background-color의 변화에 0.2초 동안 서서히 효과를 부여합니다. */
     transition: background-color 0.2s ease-in;
 }
 
@@ -169,25 +168,25 @@ async function modalfuntion(button) {
                 <div class="col-md-7">
                     <div class="task-details">
                         <h3 class="task-name"><%= task.getName() %></h3>
-                        <p class="task-author">Author: <%= task.getAuthor() %></p>
+                        <div class="task-author">Author: <%= task.getAuthor() %></div>
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <p class="task-date">Created: <%= task.displayCreatedAt() %></p>
-                    <p class="task-date">Updated: <%= task.displayUpdatedAt() %></p>
+                    <div class="task-date">Created: <%= task.displayCreatedAt() %></div>
+                    <div class="task-date">Updated: <%= task.displayUpdatedAt() %></div>
                     <% const closedAt = task.displayClosedAt(); %>
 
                     <% if (closedAt) { %>
-                        <p class="task-date">Completed: <%= closedAt %></p>
+                        <div class="task-date">Completed: <%= closedAt %></div>
                     <% } else { %>
-                        <p class="task-date">Not completed yet</p>
+                        <div class="task-date">Not completed yet</div>
                     <% } %>
 
                 </div>
                 <div hidden class="show-value-is-closed"><%= task.getIsClosed() %></div>
                 <div class="row">
-                    <button class="btn btn-outline-primary" onclick="changeTaskClosedState(this, <%= task.getId() %>)">Change State</button>
-                    <button class="btn btn-outline-success" onclick="getAllTasksWithParentProject(this, <%= task.getId() %>)">Show Results</button>
+                    <button class="btn btn-primary" onclick="changeTaskClosedState(this, <%= task.getId() %>)">Change State</button>
+                    <button class="btn btn-success" onclick="getAllTasksWithParentProject(this, <%= task.getId() %>)">Show Results</button>
                 </div>
             </div>
         </li>
@@ -200,7 +199,7 @@ async function modalfuntion(button) {
 <br>
 
 <script type="text/javascript" src="/js/common.js"></script>
-<script type="text/javascript" src="/js/detail_api.js"></script>
+<script type="text/javascript" src="/js/projects/detail_api.js"></script>
 
 <script>
 async function changeTaskClosedState(button, taskId) {
@@ -223,6 +222,9 @@ async function changeTaskClosedState(button, taskId) {
         }
 
         await changeTaskCloseStateApi(taskId, currentStateClosed) ;
+        setTimeout(function() {
+            location.reload();
+        }, 200);
 
     } catch (err) {
         console.error(err)

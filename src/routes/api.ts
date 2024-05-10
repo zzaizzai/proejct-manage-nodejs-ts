@@ -87,7 +87,6 @@ router.post('/tasks/change_close_state', async (req, res) => {
     const task = await Task.getTaskWithId(taskId)
 
     await task.setIsClosed()
-    await task.setClosedAt()
 
     return res.status(200).send({data: "good"})
 })
